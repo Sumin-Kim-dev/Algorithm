@@ -21,34 +21,34 @@ public class boj7579 {
 		int m = Integer.parseInt(st.nextToken());
 
 		apps = new App[n];
-		int memorySum = 0;
-		int priceSum = 0;
 		StringTokenizer st1 = new StringTokenizer(br.readLine());
 		StringTokenizer st2 = new StringTokenizer(br.readLine());
 		int memory, price;
 		for (int i = 0; i < n; i++) {
 			memory = Integer.parseInt(st1.nextToken());
-			memorySum += memory;
 			price = Integer.parseInt(st2.nextToken());
-			priceSum += price;
 			apps[i] = new App(memory, price);
 		}
-		bw.write(priceSum - keep(memorySum - m) + "");
+		bw.write(price(m) + "");
 		bw.close();
 	}
 
-	static int keep(int memory) {
-		int keep[] = new int[memory + 1];
-		int m, p;
+	// 특정 비용 이내로 메모리 확보 최대로 되게 하는 배낭문제
+	// 비용에 따른 메모리 확보량은 증가함수이므로 메모리 m 이상을 확보하는 최소의 비용 찾기 가능
+	static int price(int m) {
+		int memory[] = new int[10001];
+		int mi, pi;
 		for (int i = 0; i < n; i++) {
-			m = apps[i].memory;
-			p = apps[i].price;
-			for (int j = memory; j >= m; j--) {
-				if (keep[j - m] + p > keep[j])
-					keep[j] = keep[j - m] + p;
-			}
+			mi = apps[i].memory;
+			pi = apps[i].price;
+			for (int j = 10000; j >= pi; j--)
+				if (memory[j] < memory[j - pi] + mi)
+					memory[j] = memory[j - pi] + mi;
 		}
-		return keep[memory];
+		int price = 0;
+		while (memory[price] < m)
+			price++;
+		return price;
 	}
 }
 
