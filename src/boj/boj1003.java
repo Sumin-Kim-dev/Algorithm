@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class boj1003 {
+public class BOJ1003 {
 
 	static StringBuilder sb = new StringBuilder();
 

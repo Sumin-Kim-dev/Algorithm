@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class boj11401 {
+public class BOJ11401 {
 
 	final static int p = 1000000007;
 	final static String binary = Integer.toBinaryString(p - 2);

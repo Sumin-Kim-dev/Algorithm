@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class boj10816 {
+public class BOJ10816 {
 
 	public static void main(String[] args) throws IOException {
 

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class boj11729 {
+public class BOJ11729 {
 
 	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class boj11866 {
+public class BOJ11866 {
 
 	public static void main(String[] args) throws IOException {
 

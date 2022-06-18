@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class boj11047 {
+public class BOJ11047 {
 
 	static int coin[];
 

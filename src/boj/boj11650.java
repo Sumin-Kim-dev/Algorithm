@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class boj11650 {
+public class BOJ11650 {
 
 	public static void main(String[] args) throws IOException {
 

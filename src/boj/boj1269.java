@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class boj1269 {
+public class BOJ1269 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

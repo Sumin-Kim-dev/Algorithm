@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class boj11723 {
+public class BOJ11723 {
 
 	static StringBuilder sb = new StringBuilder();
 	static HashSet<Integer> all = new HashSet<>();

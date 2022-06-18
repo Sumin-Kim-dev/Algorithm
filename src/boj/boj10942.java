@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class boj10942 {
+public class BOJ10942 {
 
 	static int n, num[], palindrome[][];
 
