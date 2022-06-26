@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -44,15 +42,15 @@ public class BOJ2206 {
 			for (int i = 0; i < 4; i++) {
 				int newX = x + xAdd[i];
 				int newY = y + yAdd[i];
-				// ������ ��� ���� ����
+				// 범위를 벗어날 수는 없다
 				if (newX < 0 || newX >= n || newY < 0 || newY >= m)
 					continue;
-				// �̹� ���� �ѹ� �ν��µ� �� ���� ����� ���� ����
+				// 이미 벽을 한번 부쉈는데 또 벽을 통과할 수는 없다
 				if ((wall & map[newX][newY]) == 1)
 					continue;
-				// �ѹ��� �� �ͺ� ������ ���
+				// 한번도 안 와본 지점인 경우
 				if (path[newX][newY] == null) {
-					// �������� ������ ���
+					// 최단거리에 도달한 경우
 					if (newX == n - 1 && newY == m - 1)
 						return dist + 1;
 					int newWall = wall | map[newX][newY];
@@ -60,7 +58,7 @@ public class BOJ2206 {
 					path[newX][newY] = new Path(dist + 1, newWall);
 					continue;
 				}
-				// �̹� �� �հ� �ͺ� ���������� ���� �� �հ� �� �� �ִ� ���
+				// 이미 벽 뚫고 와본 지점이지만 벽을 안 뚫고도 올 수 있는 경우
 				if (!path[newX][newY].check0 && wall == 0 && map[newX][newY] == 0) {
 					queue.add(new int[] { newX, newY, wall });
 					path[newX][newY].setDist(dist + 1);

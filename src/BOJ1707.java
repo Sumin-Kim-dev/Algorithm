@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -41,14 +39,14 @@ public class BOJ1707 {
 
 	static String isBipartite(int v, LinkedList<Integer>[] edge) {
 		Queue<Integer> queue = new LinkedList<>();
-		// ���� �� ���������� 0, �ƴϸ� ���տ� ���� 1 �Ǵ� 2
+		// 아직 안 정해졌으면 0, 아니면 집합에 따라 1 또는 2
 		int[] set = new int[v];
 
 		for (int i = 0; i < v; i++) {
-			// �̹� ���� ���������� ��ŵ
+			// 이미 집합 정해졌으면 스킵
 			if (set[i] != 0)
 				continue;
-			// �� ���������� 1�� ���տ� �ֱ�
+			// 안 정해졌으면 1번 집합에 넣기
 			set[i] = 1;
 			queue.add(i);
 			while (!queue.isEmpty()) {
@@ -60,7 +58,7 @@ public class BOJ1707 {
 						set[next] = 3 - set[curr];
 						queue.add(next);
 					}
-					// �浹 �Ͼ�� ���
+					// 충돌 일어나는 경우
 					if (set[next] == set[curr])
 						return "NO";
 				}

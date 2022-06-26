@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,21 +25,21 @@ public class BOJ2470 {
 
 	static int[] neutral(int[] value, int n) {
 		int first = 0, second = 1;
-		// �ʱ� �� ����� Ư������ ���� ����
+		// 초기 두 용액의 특성값의 합의 절댓값
 		int valueSum = value[0] + value[1];
 		if (valueSum < 0)
 			valueSum = -valueSum;
-		// i�� ���� ����� Ư������ ���� ������ �ּҰ� �ǵ��� �Ѵ�
+		// i와 이후 용액의 특성값의 합의 절댓값이 최소가 되도록 한다
 		for (int i = 0; i < n - 1; i++) {
-			// �̺�Ž��
+			// 이분탐색
 			int j = i + 1;
 			int end = n;
 			while (j + 1 < end) {
 				int mid = (j + end) / 2;
-				// ��Ȯ�� 0�� �Ǹ� ����
+				// 정확히 0이 되면 리턴
 				if (value[i] + value[mid] == 0)
 					return new int[] { value[i], value[mid] };
-				// 0���� ���� �ִ��� ���� ã��
+				// 0보다 작은 최대의 원소 찾기
 				if (value[i] + value[mid] > 0)
 					end = mid;
 				if (value[i] + value[mid] < 0)

@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,14 +24,14 @@ public class BOJ24480 {
 		int m = Integer.parseInt(st.nextToken());
 		int r = Integer.parseInt(st.nextToken());
 
-		// �ʱ�ȭ
+		// 초기화
 		dfs = new int[n];
 		edge = new LinkedList[n];
 		for (int i = 0; i < n; i++) {
 			edge[i] = new LinkedList<>();
 		}
 
-		// ���� ���� ���� ����Ʈ�� �Է�
+		// 간선 정보 연결 리스트에 입력
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine());
 			int v1 = Integer.parseInt(st.nextToken());
@@ -41,14 +39,14 @@ public class BOJ24480 {
 			edge[v1 - 1].add(v2 - 1);
 			edge[v2 - 1].add(v1 - 1);
 		}
-		// ���� ����Ʈ ����
+		// 연결 리스트 정렬
 		for (int i = 0; i < n; i++) {
 			Collections.sort(edge[i], Collections.reverseOrder());
 		}
 
 		dfs(r - 1);
 
-		// ���
+		// 출력
 		for (int i = 0; i < n; i++) {
 			sb.append(dfs[i]).append('\n');
 		}

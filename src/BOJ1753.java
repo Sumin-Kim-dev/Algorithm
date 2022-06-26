@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -54,14 +52,14 @@ public class BOJ1753 {
 		dist[k] = 0;
 		while (!pq.isEmpty()) {
 			Vertex curr = pq.poll();
-			// �̹� �湮�� ���� ��ŵ
+			// 이미 방문한 점은 스킵
 			if (dist[curr.node] < curr.minDist)
 				continue;
-			// �̿��� �� Ȯ��
+			// 이웃한 점 확인
 			Iterator<Edge> iter = edge[curr.node].iterator();
 			while (iter.hasNext()) {
 				Edge e = iter.next();
-				// �� ��ΰ� �� �����ٸ� ����
+				// 새 경로가 더 가깝다면 갱신
 				if (dist[curr.node] + e.dist < dist[e.end]) {
 					dist[e.end] = dist[curr.node] + e.dist;
 					pq.offer(new Vertex(e.end, dist[e.end]));

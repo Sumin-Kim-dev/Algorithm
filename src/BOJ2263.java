@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -34,16 +32,16 @@ public class BOJ2263 {
 
 	static void preorder(int inStart, int inEnd, int postStart, int postEnd) {
 		int n = postEnd - postStart;
-		// 0���� null tree -> ��� ����
+		// 0개면 null tree -> 출력 없음
 		if (n == 0)
 			return;
 
-		// ���Ұ� ������ head ���Ҵ� postorder�� �� ��
+		// 원소가 있으면 head 원소는 postorder의 맨 끝
 		int head = postorder[postEnd - 1];
 		int headIndex = inorderIndex[head];
 		int leftLength = headIndex - inStart;
 
-		// ���
+		// 출력
 		sb.append(head).append(' ');
 		preorder(inStart, headIndex, postStart, postStart + leftLength);
 		preorder(headIndex + 1, inEnd, postStart + leftLength, postEnd - 1);
