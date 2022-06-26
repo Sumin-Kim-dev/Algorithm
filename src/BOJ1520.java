@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class boj1520 {
+public class BOJ1520 {
 
 	static int m, n, map[][], path[][];
 
@@ -24,7 +22,7 @@ public class boj1520 {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < n; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
-				path[i][j] = -1; // ���� �� ���� ���� -1�� �ʱ�ȭ
+				path[i][j] = -1; // 아직 안 구한 값은 -1로 초기화
 			}
 		}
 		bw.write(path(m - 1, n - 1) + "");

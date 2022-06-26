@@ -1,8 +1,6 @@
-
-
 import java.util.Scanner;
 
-public class boj1546 {
+public class BOJ1546 {
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);

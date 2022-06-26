@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class boj14889 {
+public class BOJ14889 {
 
 	static int N, s[][], team[];
 	static int min = 40000;
@@ -38,7 +36,7 @@ public class boj14889 {
 			return;
 		}
 
-		// ��ŸƮ ���� ���Ե� ������ ���� ��ȣ i ���ϱ�(�ƹ��� ������ -1)
+		// 스타트 팀에 포함된 마지막 팀원 번호 i 구하기(아무도 없으면 -1)
 		int i = N - 1;
 		while (i >= 0 && team[i] == 0)
 			i--;

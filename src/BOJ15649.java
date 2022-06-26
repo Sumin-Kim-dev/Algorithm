@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,9 +5,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class boj15650 {
+public class BOJ15649 {
 	static int N, M;
 	static int seq[];
+	static boolean visit[];
 	static StringBuilder sb = new StringBuilder();
 
 	public static void main(String[] args) throws IOException {
@@ -20,6 +19,7 @@ public class boj15650 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		seq = new int[M];
+		visit = new boolean[N];
 		dfs(0);
 		bw.write(sb.toString());
 		bw.close();
@@ -35,9 +35,11 @@ public class boj15650 {
 			return;
 		}
 		for (int i = 0; i < N; i++) {
-			if (depth == 0 || i + 1 > seq[depth - 1]) {
+			if (!visit[i]) {
+				visit[i] = true;
 				seq[depth] = i + 1;
 				dfs(depth + 1);
+				visit[i] = false;
 			}
 		}
 	}

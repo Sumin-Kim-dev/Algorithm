@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -49,7 +47,7 @@ public class BOJ14502 {
 				maxSafeSize = safeSize;
 			return;
 		}
-		// ��Ʈ��ŷ
+		// 백트래킹
 		for (int i = 0; i < blankSize; i++) {
 			int[] wall = blank.get(i);
 			if (depth != 0 && seq[depth - 1] >= i)
@@ -68,13 +66,13 @@ public class BOJ14502 {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				int[] loc = { i, j };
-				// ���̷��� ���� ĭ�� �н�
+				// 바이러스 없는 칸은 패스
 				if (currLab[i][j] != 2)
 					continue;
-				// �̹� ���̷��� �ִٰ� üũ�� ĭ�� �н�
+				// 이미 바이러스 있다고 체크한 칸도 패스
 				if (check[i][j])
 					continue;
-				// ó�� �湮�ϴ� ���̷��� �ִ� ĭ
+				// 처음 방문하는 바이러스 있는 칸
 				queue.add(loc);
 				check[i][j] = true;
 				while (!queue.isEmpty()) {
@@ -82,13 +80,13 @@ public class BOJ14502 {
 					for (int k = 0; k < 4; k++) {
 						int x = curr[0] + xAdd[k];
 						int y = curr[1] + yAdd[k];
-						// ���� ���̸� ��ŵ
+						// 범위 밖이면 스킵
 						if (x < 0 || x >= n || y < 0 || y >= m)
 							continue;
-						// �̹� üũ�� ���̸� ��ŵ
+						// 이미 체크한 곳이면 스킵
 						if (check[x][y])
 							continue;
-						// ���̷����� �Űܰ� �� ������
+						// 바이러스가 옮겨갈 수 있으면
 						if (currLab[x][y] == 0) {
 							check[x][y] = true;
 							queue.add(new int[] { x, y });

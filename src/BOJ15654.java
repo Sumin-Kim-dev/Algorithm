@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,7 +6,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class boj15654 {
+public class BOJ15654 {
 
 	static StringBuilder sb = new StringBuilder();
 	static int m, n, arr[], seq[];

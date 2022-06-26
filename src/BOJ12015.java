@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -22,8 +20,8 @@ public class BOJ12015 {
 		}
 
 		final int DEFAULT = 1000001;
-		// f(i, x) : a[1] ~ a[i]�� ���� x�� �����ϴ� �κ� ������ �� ������ �ּڰ�
-		// lis(i) : a[1] ~ a[i]�� �����ϴ� �κ� ������ �ִ� ����
+		// f(i, x) : a[1] ~ a[i]의 길이 x인 증가하는 부분 수열의 끝 원소의 최솟값
+		// lis(i) : a[1] ~ a[i]의 증가하는 부분 수열의 최대 길이
 		int f[] = new int[n + 1], lis = 0;
 		f[0] = 0;
 		// ���� ū ���� �ʱ�ȭ(� ������ ���Һ��ٵ� ũ�� ���)
@@ -41,7 +39,7 @@ public class BOJ12015 {
 				f[lis + 1] = a[i - 1];
 				lis++;
 			} else {
-				// f[x] < a[i-1]�� �ִ��� x ã��
+				// f[x] < a[i-1]인 최대의 x 찾기
 				while (start + 1 < end) {
 					mid = (start + end) / 2;
 					if (f[mid] >= a[i - 1])

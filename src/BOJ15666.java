@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,7 +6,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class boj15663 {
+public class BOJ15666 {
 
 	static int n, m, arr[], seq[];
 	static boolean visit[];
@@ -44,14 +42,11 @@ public class boj15663 {
 			return;
 		}
 		for (int i = 0; i < n; i++) {
-			if (depth == 0 || !visit[i]) {
-				visit[i] = true;
+			if (depth == 0 || seq[depth - 1] <= arr[i])
 				if (seq[depth] != arr[i]) {
 					seq[depth] = arr[i];
 					dfs(depth + 1);
 				}
-				visit[i] = false;
-			}
 		}
 		seq[depth] = 0;
 	}

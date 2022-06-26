@@ -1,12 +1,10 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class boj1316 {
+public class BOJ1316 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,14 +26,14 @@ public class boj1316 {
 		if (s.isBlank())
 			return false;
 
-		// ������ �ߺ� ���� ����
+		// 연속한 중복 문자 제거
 		String delRepeat = "" + s.charAt(0);
 		for (int i = 1; i < s.length(); i++) {
 			if (s.charAt(i) == delRepeat.charAt(delRepeat.length() - 1))
 				continue;
 			delRepeat += s.charAt(i);
 		}
-		// �ߺ� ���� ������ �׷칮�� �ƴ�
+		// 중복 문자 있으면 그룹문자 아님
 		for (int i = 0; i < delRepeat.length(); i++) {
 			char delRepeat_i = delRepeat.charAt(i);
 			for (int j = 0; j < i; j++) {

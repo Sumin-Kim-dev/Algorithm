@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -31,7 +29,7 @@ public class BOJ1269 {
 				A.remove(element);
 		}
 
-		// A-B ���� ���� = A.size(), B-A ���� ���� = b - (a- A.size())
+		// A-B 원소 개수 = A.size(), B-A 원소 개수 = b - (a- A.size())
 		bw.write(b - a + 2 * A.size() + "");
 		bw.close();
 	}

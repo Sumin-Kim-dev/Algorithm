@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,7 +25,7 @@ public class BOJ1300 {
 		long max = i * i + 1;
 		long min = 1;
 		long mid;
-		// min = underM < k�� �ִ��� �ڿ���
+		// min = underM < k인 수 중 최댓값
 		while (min + 1 < max) {
 			mid = (max + min) / 2;
 			if (underM(mid) >= k)

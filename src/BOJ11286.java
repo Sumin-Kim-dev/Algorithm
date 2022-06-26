@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -41,12 +39,12 @@ class AbsHeap {
 	public void add(int x) {
 		size++;
 		heap[size - 1] = x;
-		int i = size - 1; // x�� �ִ� ���
-		int j; // i�� �θ� ���
+		int i = size - 1; // x가 있는 노드
+		int j; // i의 부모 노드
 		int temp;
 		while (i > 0) {
 			j = (i - 1) / 2;
-			if (Math.abs(x) < Math.abs(heap[j]) || x == -heap[j] && x < 0) { // ��� ���� �ݴ�� ��ȯ
+			if (Math.abs(x) < Math.abs(heap[j]) || x == -heap[j] && x < 0) { // 대소 관계 반대면 교환
 				temp = heap[j];
 				heap[j] = x;
 				heap[i] = temp;
@@ -64,8 +62,8 @@ class AbsHeap {
 		int min = heap[0];
 		heap[0] = heap[size - 1];
 		size--;
-		int i = 0; // �̵��ؾ��ϴ� ���� �ִ� ���
-		int j; // i�� �ڽ� ��� �� ���� ���� �ִ� ���
+		int i = 0; // 이동해야하는 값이 있는 노드
+		int j; // i의 자식 노드 중 작은 값이 있는 노드
 		int temp;
 		while (i <= (size - 1) / 2) {
 			j = 2 * i + 1;
