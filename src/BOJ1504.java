@@ -35,6 +35,7 @@ public class BOJ1504 {
 		v2 = Integer.parseInt(st.nextToken()) - 1;
 	}
 	
+	// 다익스트라 알고리즘
 	private int[] Dijkstra(int start) {
 		int[] dist = new int[n];
 		Arrays.fill(dist, INF);
