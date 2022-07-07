@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
@@ -57,7 +53,7 @@ public class BOJ1450 {
 
 	static ArrayList<long[]> count(int[] value) {
 		TreeMap<Long, Long> map = new TreeMap<>();
-		map.put(0l, 1l);
+		map.put(0L, 1L);
 		seq = new int[value.length];
 		backtracking(value, map, 0);
 		return mapToList(map);
@@ -73,7 +69,7 @@ public class BOJ1450 {
 			if (depth == 0 || seq[depth - 1] < i) {
 				sum += value[i];
 				seq[depth] = i;
-				map.put(sum, map.getOrDefault(sum, 0l) + 1);
+				map.put(sum, map.getOrDefault(sum, 0L) + 1);
 				backtracking(value, map, depth + 1);
 				sum -= value[i];
 				seq[depth] = -1;
@@ -83,8 +79,8 @@ public class BOJ1450 {
 
 	static ArrayList<long[]> mapToList(TreeMap<Long, Long> map) {
 		ArrayList<long[]> mapToList = new ArrayList<>();
-		ArrayList<Long> keys = new ArrayList<Long>(map.keySet());
-		ArrayList<Long> values = new ArrayList<Long>(map.values());
+		ArrayList<Long> keys = new ArrayList<>(map.keySet());
+		ArrayList<Long> values = new ArrayList<>(map.values());
 		for (int i = 0; i < keys.size(); i++)
 			mapToList.add(new long[] { keys.get(i), values.get(i) });
 		return mapToList;

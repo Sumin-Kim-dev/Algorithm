@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -71,7 +70,7 @@ public class BOJ12852 {
         print();
     }
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         new BOJ12852().solution();
     }
 }

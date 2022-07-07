@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class BOJ2263 {
@@ -10,7 +6,7 @@ public class BOJ2263 {
 	static int[] inorder, postorder, inorderIndex;
 	static StringBuilder sb = new StringBuilder();
 
-	public static void main(String args[]) throws IOException {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
@@ -45,6 +41,5 @@ public class BOJ2263 {
 		sb.append(head).append(' ');
 		preorder(inStart, headIndex, postStart, postStart + leftLength);
 		preorder(headIndex + 1, inEnd, postStart + leftLength, postEnd - 1);
-		return;
 	}
 }
