@@ -29,7 +29,7 @@ public class BOJ1167 {
             int start = Integer.parseInt(st.nextToken()) - 1;
             while (true) {
                 int end = Integer.parseInt(st.nextToken()) - 1;
-                if(end == -2) break;
+                if (end == -2) break;
                 int weight = Integer.parseInt(st.nextToken());
                 adj[start].add(new Node(end, weight));
             }
