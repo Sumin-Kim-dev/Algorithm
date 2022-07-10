@@ -36,8 +36,8 @@ public class BOJ1976 {
             set[i] = new Node(i);
             for (int j = 0; j < i; j++) {
                 int adj = Integer.parseInt(st.nextToken());
-                if(adj == 0) continue;
-                if(findSet(i) == findSet(j)) continue;
+                if (adj == 0) continue;
+                if (findSet(i) == findSet(j)) continue;
                 union(i, j);
             }
         }
@@ -56,8 +56,8 @@ public class BOJ1976 {
 
     String isAble(int[] path) {
         int set = findSet(path[0]);
-        for(int i = 1; i < path.length; i++) {
-            if(set != findSet(path[i])) return "NO";
+        for (int i = 1; i < path.length; i++) {
+            if (set != findSet(path[i])) return "NO";
         }
         return "YES";
     }
