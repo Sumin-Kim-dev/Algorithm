@@ -15,12 +15,12 @@ public class BOJ1916 {
         int m = Integer.parseInt(br.readLine());
         bus = new Integer[n][n];
         StringTokenizer st;
-        while(m-- > 0) {
+        while (m-- > 0) {
             st = new StringTokenizer(br.readLine());
             int busStart = Integer.parseInt(st.nextToken()) - 1;
             int busEnd = Integer.parseInt(st.nextToken()) - 1;
             int busCost = Integer.parseInt(st.nextToken());
-            if(bus[busStart][busEnd] == null || busCost < bus[busStart][busEnd])
+            if (bus[busStart][busEnd] == null || busCost < bus[busStart][busEnd])
                 bus[busStart][busEnd] = busCost;
         }
         st = new StringTokenizer(br.readLine());
@@ -31,12 +31,14 @@ public class BOJ1916 {
     // 다익스트라 알고리즘
     int Dijkstra() {
 
-        class City implements Comparable<City>{
+        class City implements Comparable<City> {
             final int city, cost;
+
             City(int city, int cost) {
                 this.city = city;
                 this.cost = cost;
             }
+
             public int compareTo(City c) {
                 return this.cost - c.cost;
             }
@@ -47,16 +49,16 @@ public class BOJ1916 {
         PriorityQueue<City> pq = new PriorityQueue<>();
         pq.add(new City(start, 0));
         cost[start] = 0;
-        while(!pq.isEmpty()) {
+        while (!pq.isEmpty()) {
             City curr = pq.poll();
             int currCity = curr.city;
             int currCost = curr.cost;
-            if(cost[currCity] < currCost)
+            if (cost[currCity] < currCost)
                 continue;
-            for(int i = 0; i < n; i++) {
-                if(bus[currCity][i] == null)
+            for (int i = 0; i < n; i++) {
+                if (bus[currCity][i] == null)
                     continue;
-                if(cost[i] > currCost + bus[currCity][i]) {
+                if (cost[i] > currCost + bus[currCity][i]) {
                     cost[i] = currCost + bus[currCity][i];
                     pq.add(new City(i, cost[i]));
                 }
@@ -68,7 +70,7 @@ public class BOJ1916 {
     void solution() throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         input();
-        bw.write(Dijkstra()+"");
+        bw.write(Dijkstra() + "");
         bw.close();
     }
 
