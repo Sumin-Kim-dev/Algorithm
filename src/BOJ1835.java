@@ -18,7 +18,7 @@ public class BOJ1835 {
 
     void repeat() {
         for (int i = 1; i <= n; i++) {
-            for(int j = 1; j <= i; j++)
+            for (int j = 1; j <= i; j++)
                 cards.add(cards.poll());
             cardOrder.put(cards.poll(), i);
         }
@@ -27,7 +27,7 @@ public class BOJ1835 {
     void print() throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
-        for(int i = 1; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             sb.append(cardOrder.get(i)).append(' ');
         }
         bw.write(sb.toString());
@@ -39,7 +39,8 @@ public class BOJ1835 {
         repeat();
         print();
     }
-    public static void main(String[] args) throws IOException{
+
+    public static void main(String[] args) throws IOException {
         new BOJ1835().solution();
     }
 }
