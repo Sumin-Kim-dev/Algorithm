@@ -20,8 +20,8 @@ public class BOJ1158 {
 
     void makeSequence() {
         int index = 0;
-        while(index < n) {
-            for(int i = 1; i < k; i++)
+        while (index < n) {
+            for (int i = 1; i < k; i++)
                 people.add(people.poll());
             seq[index++] = people.poll();
         }
@@ -31,7 +31,7 @@ public class BOJ1158 {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
         sb.append('<');
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             sb.append(seq[i]);
             if (i != n - 1) sb.append(", ");
         }
