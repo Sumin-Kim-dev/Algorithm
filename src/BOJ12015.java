@@ -14,7 +14,7 @@ public class BOJ12015 {
 
 		int n = Integer.parseInt(br.readLine());
 		st = new StringTokenizer(br.readLine());
-		int a[] = new int[n];
+		int[] a= new int[n];
 		for (int i = 0; i < n; i++) {
 			a[i] = Integer.parseInt(st.nextToken());
 		}
@@ -22,9 +22,10 @@ public class BOJ12015 {
 		final int DEFAULT = 1000001;
 		// f(i, x) : a[1] ~ a[i]의 길이 x인 증가하는 부분 수열의 끝 원소의 최솟값
 		// lis(i) : a[1] ~ a[i]의 증가하는 부분 수열의 최대 길이
-		int f[] = new int[n + 1], lis = 0;
+		int[] f = new int[n + 1];
+		int lis = 0;
 		f[0] = 0;
-		// ���� ū ���� �ʱ�ȭ(� ������ ���Һ��ٵ� ũ�� ���)
+		// 아주 큰 수로 초기화(어떤 수열의 원소보다도 크면 충분)
 		for (int i = 1; i <= n; i++)
 			f[i] = DEFAULT;
 
