@@ -11,7 +11,6 @@ public class BOJ1744 {
     ArrayList<Integer> biggerThan1 = new ArrayList<>();
     ArrayList<Integer> negative = new ArrayList<>();
 
-
     void input() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
@@ -45,8 +44,7 @@ public class BOJ1744 {
         for (int i = start; i < size; i += 2) {
             maxOfNegative += negative.get(i) * negative.get(i + 1);
         }
-        if (start == 1 && numOfZeros == 0)
-            maxOfNegative += negative.get(0);
+        if (start == 1 && numOfZeros == 0) maxOfNegative += negative.get(0);
         return maxOfNegative;
     }
 
