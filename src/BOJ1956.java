@@ -33,10 +33,9 @@ public class BOJ1956 {
             }
         }
         for (int k = 0; k < v; k++) {
-            int[][] currDist = dist.clone();
             for (int i = 0; i < v; i++) {
                 for (int j = 0; j < v; j++) {
-                    dist[i][j] = Math.min(currDist[i][j], currDist[i][k] + currDist[k][j]);
+                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
         }
