@@ -20,14 +20,14 @@ public class BOJ9370 {
         g = Integer.parseInt(st.nextToken()) - 1;
         h = Integer.parseInt(st.nextToken()) - 1;
         adj = new int[n][n];
-        while(m-- > 0) {
+        while (m-- > 0) {
             st = new StringTokenizer(br.readLine());
             int start = Integer.parseInt(st.nextToken()) - 1;
             int end = Integer.parseInt(st.nextToken()) - 1;
             adj[start][end] = adj[end][start] = Integer.parseInt(st.nextToken());
         }
         x = new int[t];
-        for(int i = 0; i < t; i++) {
+        for (int i = 0; i < t; i++) {
             x[i] = Integer.parseInt(br.readLine()) - 1;
         }
         Arrays.sort(x);
@@ -38,6 +38,7 @@ public class BOJ9370 {
         int[] minDist = new int[n];
         class City implements Comparable<City> {
             final int city, dist;
+
             City(int city, int dist) {
                 this.city = city;
                 this.dist = dist;
@@ -52,13 +53,13 @@ public class BOJ9370 {
         Arrays.fill(minDist, MAX);
         minDist[start] = 0;
         pq.add(new City(start, 0));
-        while(!pq.isEmpty()) {
+        while (!pq.isEmpty()) {
             City curr = pq.poll();
-            if(minDist[curr.city] < curr.dist)
+            if (minDist[curr.city] < curr.dist)
                 continue;
-            for(int i = 0; i < n; i++) {
-                if(adj[curr.city][i] == 0) continue;
-                if(adj[curr.city][i] + curr.dist < minDist[i]) {
+            for (int i = 0; i < n; i++) {
+                if (adj[curr.city][i] == 0) continue;
+                if (adj[curr.city][i] + curr.dist < minDist[i]) {
                     minDist[i] = curr.dist + adj[curr.city][i];
                     pq.add(new City(i, minDist[i]));
                 }
@@ -74,8 +75,8 @@ public class BOJ9370 {
         int[] distFromH = Dijkstra(h);
         int distSG = distFromS[g];
         int distSH = distFromS[h];
-        for(int curr : x) {
-            if(distFromS[curr] - adj[g][h] == Math.min(distSG + distFromH[curr], distSH + distFromG[curr]))
+        for (int curr : x) {
+            if (distFromS[curr] - adj[g][h] == Math.min(distSG + distFromH[curr], distSH + distFromG[curr]))
                 sb.append(curr + 1).append(' ');
         }
         System.out.println(sb);
@@ -84,7 +85,7 @@ public class BOJ9370 {
     void solution() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
-        while(T-- > 0) {
+        while (T-- > 0) {
             input(br);
             solve();
         }
