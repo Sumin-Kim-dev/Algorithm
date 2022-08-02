@@ -37,15 +37,13 @@ public class BOJ11657 {
         long[] minTime = new long[n];
         for (int i = 1; i < n; i++)
             minTime[i] = INF;
-        for (int i = 1; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             for (Bus b : bus) {
-                if (minTime[b.start] != INF && minTime[b.start] + b.cost < minTime[b.end])
+                if (minTime[b.start] != INF && minTime[b.start] + b.cost < minTime[b.end]) {
                     minTime[b.end] = minTime[b.start] + b.cost;
+                    if (i == n - 1) return new long[]{-1};
+                }
             }
-        }
-        for (Bus b : bus) {
-            if (minTime[b.start] != INF && minTime[b.start] + b.cost < minTime[b.end])
-                return new long[]{-1};
         }
         for (int i = 0; i < n; i++)
             if (minTime[i] == INF) minTime[i] = -1;
