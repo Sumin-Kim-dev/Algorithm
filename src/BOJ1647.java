@@ -31,9 +31,9 @@ public class BOJ1647 {
         Arrays.fill(set, -1);
         int numOfRoads = 0;
         int cost = 0;
-        while(numOfRoads < n - 2) {
+        while (numOfRoads < n - 2) {
             int[] currRoad = roads.poll();
-            if(!union(currRoad[0], currRoad[1], set)) continue;
+            if (!union(currRoad[0], currRoad[1], set)) continue;
             numOfRoads++;
             cost += currRoad[2];
         }
