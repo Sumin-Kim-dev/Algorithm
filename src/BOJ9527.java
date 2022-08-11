@@ -14,10 +14,10 @@ public class BOJ9527 {
     }
 
     long count(long a) {
-        if(a == 0 || a == 1) return a;
+        if (a == 0 || a == 1) return a;
         int digits = 0;
         long powOf2 = 1;
-        while(powOf2 * 2 <= a) {
+        while (powOf2 * 2 <= a) {
             powOf2 *= 2;
             digits++;
         }
