@@ -16,10 +16,10 @@ public class BOJ1581 {
     }
 
     int ans() {
-        if(ff == 0 && fs == 0) return ss + Math.min(sf, 1);
-        if(fs == 0) return ff;
+        if (ff == 0 && fs == 0) return ss + Math.min(sf, 1);
+        if (fs == 0) return ff;
         int changeTempo;
-        if(fs > sf) changeTempo = 2 * sf + 1;
+        if (fs > sf) changeTempo = 2 * sf + 1;
         else changeTempo = 2 * fs;
         return ff + ss + changeTempo;
     }
