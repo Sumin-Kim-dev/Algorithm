@@ -11,13 +11,13 @@ public class BOJ1715 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
         cards = new PriorityQueue<>();
-        for(int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++)
             cards.add(Integer.parseInt(br.readLine()));
     }
 
     long count() {
         long count = 0;
-        while(cards.size() > 1) {
+        while (cards.size() > 1) {
             int first = cards.poll();
             int second = cards.poll();
             cards.add(first + second);
