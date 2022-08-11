@@ -40,17 +40,17 @@ public class BOJ1956 {
             }
         }
         int[] cycle = new int[v];
-        for(int i = 0; i < v; i++)
+        for (int i = 0; i < v; i++)
             cycle[i] = dist[i][i];
         return cycle;
     }
 
     int getMin(int[] arr) {
         int min = arr[0];
-        for(int i = 1; i < arr.length; i++) {
-            if(min > arr[i]) min = arr[i];
+        for (int i = 1; i < arr.length; i++) {
+            if (min > arr[i]) min = arr[i];
         }
-        if(min == MAX) return -1;
+        if (min == MAX) return -1;
         return min;
     }
 
