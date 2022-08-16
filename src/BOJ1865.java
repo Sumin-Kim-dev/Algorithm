@@ -9,7 +9,6 @@ public class BOJ1865 {
     static final int INF = 10_000_000;
     int n;
     ArrayList<Edge> time;
-    boolean[] checked;
 
     static class Edge {
         int start, end, time;
@@ -27,9 +26,10 @@ public class BOJ1865 {
         int m = Integer.parseInt(st.nextToken());
         int w = Integer.parseInt(st.nextToken());
         time = new ArrayList<>();
-        checked = new boolean[n];
         setRoads(m, br);
         setWormHoles(w, br);
+        for (int i = 1; i <= n; i++)
+            time.add(new Edge(0, i, 0));
     }
 
     void setRoads(int m, BufferedReader br) throws IOException {
@@ -37,8 +37,8 @@ public class BOJ1865 {
         int s, e, t;
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
-            s = Integer.parseInt(st.nextToken()) - 1;
-            e = Integer.parseInt(st.nextToken()) - 1;
+            s = Integer.parseInt(st.nextToken());
+            e = Integer.parseInt(st.nextToken());
             t = Integer.parseInt(st.nextToken());
             time.add(new Edge(s, e, t));
             time.add(new Edge(e, s, t));
@@ -50,25 +50,23 @@ public class BOJ1865 {
         int s, e, t;
         for (int i = 0; i < w; i++) {
             st = new StringTokenizer(br.readLine());
-            s = Integer.parseInt(st.nextToken()) - 1;
-            e = Integer.parseInt(st.nextToken()) - 1;
+            s = Integer.parseInt(st.nextToken());
+            e = Integer.parseInt(st.nextToken());
             t = -Integer.parseInt(st.nextToken());
             time.add(new Edge(s, e, t));
         }
     }
 
-    boolean BellmanFord(int start) {
-        int[] minTime = new int[n];
+    boolean BellmanFord() {
+        int[] minTime = new int[n + 1];
         Arrays.fill(minTime, INF);
-        minTime[start] = 0;
-        checked[start] = true;
-        for (int k = 1; k <= n; k++) {
+        minTime[0] = 0;
+        for (int k = 1; k <= minTime.length; k++) {
             for (Edge e : time) {
                 if (minTime[e.start] == INF) continue;
                 if (minTime[e.start] + e.time < minTime[e.end]) {
-                    if (k == n) return true;
+                    if (k == minTime.length) return true;
                     minTime[e.end] = minTime[e.start] + e.time;
-                    checked[e.end] = true;
                 }
             }
         }
@@ -76,10 +74,7 @@ public class BOJ1865 {
     }
 
     String answer() {
-        for (int i = 0; i < n; i++) {
-            if (checked[i]) continue;
-            if (BellmanFord(i)) return "YES";
-        }
+        if (BellmanFord()) return "YES";
         return "NO";
     }
 
