@@ -21,18 +21,18 @@ public class BOJ12869 {
     }
 
     int dp(int[] scv) {
-        if(scv[0] == 0 && scv[1] == 0 && scv[2] == 0)
+        if (scv[0] == 0 && scv[1] == 0 && scv[2] == 0)
             return 0;
-        if(minAttack[scv[0]][scv[1]][scv[2]] != 0)
+        if (minAttack[scv[0]][scv[1]][scv[2]] != 0)
             return minAttack[scv[0]][scv[1]][scv[2]];
         int min = Integer.MAX_VALUE;
-        for(int[] permutation : PERMUTATION) {
+        for (int[] permutation : PERMUTATION) {
             int[] currSCV = new int[3];
-            for(int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
                 currSCV[i] = Math.max(scv[i] - ATTACK[permutation[i]], 0);
             }
             int temp = dp(currSCV) + 1;
-            if(min > temp)
+            if (min > temp)
                 min = temp;
         }
         return minAttack[scv[0]][scv[1]][scv[2]] = min;
