@@ -113,7 +113,7 @@ public class BOJ2618 {
             else police.push(2);
             position = getPath(position[0], position[1]).before;
         }
-        while(!police.isEmpty())
+        while (!police.isEmpty())
             System.out.println(police.pop());
     }
 
