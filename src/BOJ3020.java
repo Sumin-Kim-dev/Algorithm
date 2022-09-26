@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class BOJ3020 {
-    void solution() throws IOException {
+    void io() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
@@ -13,11 +13,11 @@ public class BOJ3020 {
         for (int i = 0; i < n; i++) {
             walls[i] = Integer.parseInt(br.readLine());
         }
-        int[] answer = answer(n, h, walls);
-        System.out.println(answer[0] + " " + answer[1]);
+        int[] solution = solution(n, h, walls);
+        System.out.println(solution[0] + " " + solution[1]);
     }
 
-    int[] answer(int n, int h, int[] walls) {
+    int[] solution(int n, int h, int[] walls) {
         int[] top = setTop(n, walls);
         int[] bottom = setBottom(n, h, walls);
 
@@ -95,6 +95,6 @@ public class BOJ3020 {
     }
 
     public static void main(String[] args) throws IOException {
-        new BOJ3020().solution();
+        new BOJ3020().io();
     }
 }
