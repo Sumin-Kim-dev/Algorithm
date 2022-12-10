@@ -21,50 +21,43 @@ public class BOJ17071 {
 
     int solution(int n, int k) {
         if (n == k) return 0;
-        List<Integer> goal = setGoal(k);
         boolean[][] isVisited = new boolean[MAX + 1][2];
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{n, 0});
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(n);
         isVisited[n][0] = true;
-        int min = MAX;
+        int t = 0;
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int t = Collections.binarySearch(goal, curr[0]);
-            if (t >= curr[1] && (t - curr[1]) % 2 == 0 && min > t) min = t;
-            if (curr[0] - 1 >= 0) {
-                int[] next = {curr[0] - 1, curr[1] + 1};
-                if (!isVisited[next[0]][next[1] % 2]) {
-                    isVisited[next[0]][next[1] % 2] = true;
-                    queue.offer(next);
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int curr = queue.poll();
+                if (curr == k) return t;
+                if (curr - 1 >= 0) {
+                    int next = curr - 1;
+                    if (!isVisited[next][(t + 1) % 2]) {
+                        isVisited[next][(t + 1) % 2] = true;
+                        queue.offer(next);
+                    }
+                }
+                if (curr + 1 <= MAX) {
+                    int next = curr + 1;
+                    if (!isVisited[next][(t + 1) % 2]) {
+                        isVisited[next][(t + 1) % 2] = true;
+                        queue.offer(next);
+                    }
+                }
+                if (2 * curr <= MAX) {
+                    int next = 2 * curr;
+                    if (!isVisited[next][(t + 1) % 2]) {
+                        isVisited[next][(t + 1) % 2] = true;
+                        queue.offer(next);
+                    }
                 }
             }
-            if (curr[0] + 1 <= MAX) {
-                int[] next = {curr[0] + 1, curr[1] + 1};
-                if (!isVisited[next[0]][next[1] % 2]) {
-                    isVisited[next[0]][next[1] % 2] = true;
-                    queue.offer(next);
-                }
-            }
-            if (2 * curr[0] <= MAX) {
-                int[] next = {2 * curr[0], curr[1] + 1};
-                if (!isVisited[next[0]][next[1] % 2]) {
-                    isVisited[next[0]][next[1] % 2] = true;
-                    queue.offer(next);
-                }
-            }
+            t++;
+            k += t;
+            if (k > MAX) return -1;
+            if (isVisited[k][t % 2]) return t;
         }
-        return min < MAX ? min : -1;
-    }
-
-    List<Integer> setGoal(int k) {
-        List<Integer> goal = new ArrayList<>();
-        int i = 1;
-        int currGoal = k;
-        while (currGoal <= MAX) {
-            goal.add(currGoal);
-            currGoal += i;
-            i++;
-        }
-        return goal;
+        return -1;
     }
 }
