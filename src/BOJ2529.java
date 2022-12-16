@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 public class BOJ2529 {
     int k;
     boolean[] increase;
+    boolean[] isVisited = new boolean[10];
     int[] seq;
     String[] answer = new String[2];
 
@@ -45,19 +46,13 @@ public class BOJ2529 {
         }
         for (int i = 0; i <= 9; i++) {
             int j = 9 * order + (1 - 2 * order) * i;
-            if (isAble(seq, depth, j)) {
-                if (depth > 0 && (seq[depth - 1] < j ^ increase[depth - 1])) continue;
-                seq[depth] = j;
-                backtracking(depth + 1, order);
-                seq[depth] = 0;
-            }
+            if (isVisited[j]) continue;
+            if (depth > 0 && (seq[depth - 1] < j ^ increase[depth - 1])) continue;
+            isVisited[j] = true;
+            seq[depth] = j;
+            backtracking(depth + 1, order);
+            seq[depth] = 0;
+            isVisited[j] = false;
         }
-    }
-
-    boolean isAble(int[] seq, int depth, int i) {
-        for (int j = 0; j < depth; j++) {
-            if (seq[j] == i) return false;
-        }
-        return true;
     }
 }
