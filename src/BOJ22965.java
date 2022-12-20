@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ22965 {
@@ -24,13 +23,11 @@ public class BOJ22965 {
     }
 
     int solution() {
-        int[] sortedA = Arrays.stream(a).sorted().toArray();
-        int diff = Arrays.binarySearch(sortedA, a[0]);
-        boolean circle = true;
+        int count = 0;
         for (int i = 0; i < n; i++) {
-            circle &= (a[i] == sortedA[(i + diff) % n]);
+            if (a[(i + 1) % n] < a[i]) count++;
         }
-        if (circle) return diff > 0 ? 2 : 1;
-        return 3;
+        if (count >= 2) return 3;
+        return a[n - 1] > a[0] ? 1 : 2;
     }
 }
