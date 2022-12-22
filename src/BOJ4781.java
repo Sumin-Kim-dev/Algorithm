@@ -28,20 +28,18 @@ public class BOJ4781 {
         return true;
     }
 
-    int[] max = new int[10001];
     int solution(int m) {
-        if (m <= 0) return 0;
-        if (max[m] > 0) return max[m];
+        int[] max = new int[m + 1];
         for (Candy candy : candies) {
-            if (candy.price > m) continue;
-            max[m] = Math.max(max[m], solution(m - candy.price) + candy.calory);
+            for (int p = candy.price; p <= m; p++) {
+                max[p] = Math.max(max[p], max[p - candy.price] + candy.calory);
+            }
         }
         return max[m];
     }
 
     int money(String str) {
-        String[] split = str.split("\\.");
-        return Integer.parseInt(split[0]) * 100 + Integer.parseInt(split[1]);
+        return (int) (Double.parseDouble(str) * 100 + 0.5);
     }
 
     static class Candy {
