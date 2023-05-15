@@ -10,8 +10,8 @@ public class Main {
         long answer = 1L << Long.bitCount(x);
         if (s == x) answer -= 2;
         if (s < x) answer = 0;
-        if ((s - x) % 2 != 0) answer = 0;
-        if ((((s - x) / 2) & x) != 0) answer = 0;
+        if (((s - x) & 1L) != 0) answer = 0;
+        if ((((s - x) >> 1L) & x) != 0) answer = 0;
         System.out.println(answer);
     }
 }
