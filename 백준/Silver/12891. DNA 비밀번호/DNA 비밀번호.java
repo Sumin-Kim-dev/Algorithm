@@ -44,7 +44,10 @@ public class Main {
 		while (i < s){
 			boolean isValid = true;
 			for (int k = 0; k < 4; k++) {
-				if (cnts[k] < min[k]) isValid = false;
+				if (cnts[k] < min[k]) {
+					isValid = false;
+					break;
+				}
 			}
 			if (isValid) count++;
 			i++;
