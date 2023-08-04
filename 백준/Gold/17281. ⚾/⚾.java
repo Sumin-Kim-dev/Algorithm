@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -52,42 +51,19 @@ public class Main {
 		for (int inning = 0; inning < n; inning++) {
 			int currScore = 0;
 			int out = 0;
-			boolean[] base = new boolean[3];
+			int base = 0;
 			while (out < 3) {
 				int result = results[inning][order[curr] - 1];
 				curr = (curr + 1) % 9;
-				switch (result) {
-				case 0:
-					out++;
-					break;
-				case 1:
-					if (base[2]) score++;
-					base[2] = base[1];
-					base[1] = base[0];
-					base[0] = true;
-					break;
-				case 2:
-					if (base[2]) score++;
-					if (base[1]) score++;
-					base[2] = base[0];
-					base[1] = true;
-					base[0] = false;
-					break;
-				case 3:
-					if (base[2]) score++;
-					if (base[1]) score++;
-					if (base[0]) score++;
-					base[2] = true;
-					base[1] = base[0] = false;
-					break;
-				case 4:
-					score++;
-					if (base[2]) score++;
-					if (base[1]) score++;
-					if (base[0]) score++;
-					base[2] = base[1] = base[0] = false;
-					break;
+				base = base | 1;
+				base = base << result;
+				if (result == 0) out++;
+				for (int i = 4; i < 8; i++) {
+					if ((base & (1 << i)) != 0) {
+						score++;
+					}
 				}
+				base = base % (1 << 4);
 			}
 			score += currScore;
 		}
