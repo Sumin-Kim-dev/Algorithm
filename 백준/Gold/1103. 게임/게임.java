@@ -4,53 +4,55 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static final int INF = 10000;
+	
+	static int[][] deltas = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
+	static int n;
+	static int m;
+	static int[][] map;
+	static boolean[][] visited;
+	static int[][] remain;
+	public static final int MAX = 100_000_000;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		map = new int[n][m];
+		for (int i = 0; i < n; i++) {
+			String str = br.readLine();
+			for (int j = 0; j < m; j++) {
+				char c = str.charAt(j);
+				if (c == 'H') map[i][j] = -1;
+				else map[i][j] = c - '0';
+			}
+		}
+		System.out.println(solution());
+	}
 
-    int n, m;
-    int[][] board;
-    int[][] maxCount;
-    boolean[][] isVisited;
-
-    public static void main(String[] args) throws IOException {
-        new Main().io();
-    }
-
-    void io() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        board = new int[n][m];
-        maxCount = new int[n][m];
-        isVisited = new boolean[n][m];
-        for (int i = 0; i < n; i++) {
-            String row = br.readLine();
-            for (int j = 0; j < m; j++) {
-                maxCount[i][j] = -1;
-                if (row.charAt(j) == 'H') board[i][j] = -1;
-                else board[i][j] = row.charAt(j) - '0';
-            }
-        }
-        System.out.println(solution());
-    }
-
-    int solution() {
-        int result = dfs(0, 0);
-        return result == INF ? -1 : result;
-    }
-
-    int dfs(int i, int j) {
-        if (board[i][j] == -1) return maxCount[i][j] = 0;
-        if (isVisited[i][j]) return INF;
-        if (maxCount[i][j] >= 0) return maxCount[i][j];
-        isVisited[i][j] = true;
-        maxCount[i][j] = 0;
-        if (i + board[i][j] < n) maxCount[i][j] = Math.max(maxCount[i][j], dfs(i + board[i][j], j));
-        if (i - board[i][j] >= 0) maxCount[i][j] = Math.max(maxCount[i][j], dfs(i - board[i][j], j));
-        if (j + board[i][j] < m) maxCount[i][j] = Math.max(maxCount[i][j], dfs(i, j + board[i][j]));
-        if (j - board[i][j] >= 0) maxCount[i][j] = Math.max(maxCount[i][j], dfs(i, j - board[i][j]));
-        isVisited[i][j] = false;
-        if (maxCount[i][j] == INF) return INF;
-        return ++maxCount[i][j];
-    }
+	private static int solution() {
+		visited = new boolean[n][m];
+		remain = new int[n][m];
+		int answer = dfs(0, 0);
+		return answer >= MAX ? -1 : answer;
+	}
+	
+	private static int dfs(int r, int c) {
+		if (visited[r][c]) return remain[r][c] = MAX;
+		if (remain[r][c] > 0) return remain[r][c];
+		visited[r][c] = true;
+		remain[r][c] = 1;
+		for (int[] dir : deltas) {
+			int nextR = r + dir[0] * map[r][c];
+			int nextC = c + dir[1] * map[r][c];
+			if (!isIn(nextR, nextC) || map[nextR][nextC] == -1) continue;
+			remain[r][c] = Math.max(remain[r][c], dfs(nextR, nextC) + 1);
+		}
+		visited[r][c] = false;
+		return remain[r][c];
+	}
+	
+	private static boolean isIn(int r, int c) {
+		return r >= 0 && r < n && c >= 0 && c < m;
+	}
 }
