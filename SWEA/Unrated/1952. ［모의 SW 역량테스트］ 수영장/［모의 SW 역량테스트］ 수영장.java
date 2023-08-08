@@ -27,7 +27,7 @@ public class Solution {
 			for (int i = 0; i < 12; i++) {
 				schedule[i] = Integer.parseInt(st.nextToken());
 			}
-			min = 400 * d;
+			min = y;
 			backtracking(0, 0);
 			sb.append("#" + t + " " + min + "\n");
 		}
@@ -39,14 +39,13 @@ public class Solution {
 			min = Math.min(min, curr);
 			return;
 		}
-		if (curr > min) return;
+		if (curr >= min) return;
 		if (d * schedule[month] < m) {
 			backtracking(month + 1, curr + d * schedule[month]);
 		} else {
 			backtracking(month + 1, curr + m);
 		}
 		backtracking(month + 3, curr + m3);
-		backtracking(12, y);
 	}
 
 }
