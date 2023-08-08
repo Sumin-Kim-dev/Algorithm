@@ -1,74 +1,62 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-
-	static Location field[];
-	static int m, n, k;
-	static boolean check[];
-
+	
+	static int n;
+	static int m;
+	static int[][] map;
+	
+	static int[] dr = {-1, 0, 1, 0};
+	static int[] dc = {0, 1, 0, -1};
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st;
+		int tc = Integer.parseInt(br.readLine());
 		StringBuilder sb = new StringBuilder();
-
-		int t = Integer.parseInt(br.readLine());
-		for (int i = 0; i < t; i++) {
-			st = new StringTokenizer(br.readLine());
+		for (int t = 0; t < tc; t++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
 			m = Integer.parseInt(st.nextToken());
 			n = Integer.parseInt(st.nextToken());
-			k = Integer.parseInt(st.nextToken());
-			field = new Location[k];
-			check = new boolean[k];
-			for (int j = 0; j < k; j++) {
+			map = new int[n][m];
+			int k = Integer.parseInt(st.nextToken());
+			while (k-- > 0) {
 				st = new StringTokenizer(br.readLine());
 				int x = Integer.parseInt(st.nextToken());
 				int y = Integer.parseInt(st.nextToken());
-				field[j] = new Location(x, y);
+				map[y][x] = 1;
 			}
 			sb.append(count()).append('\n');
 		}
-		bw.write(sb.toString());
-		bw.close();
+		System.out.println(sb);
 	}
-
-	static int count() {
-		int count = 0;
-		for (int i = 0; i < k; i++) {
-			if (!check[i]) {
-				bfs(i);
-				count++;
+	
+	private static int count() {
+		int cnt = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (map[i][j] != 1) continue;
+				cnt++;
+				dfs(i, j, cnt + 1);
 			}
 		}
-		return count;
+		return cnt;
 	}
 
-	static void bfs(int i) {
-		Queue<Integer> queue = new LinkedList<>();
-		queue.add(i);
-		while (!queue.isEmpty()) {
-			int index = queue.poll();
-			check[index] = true;
-			for (int j = 0; j < k; j++) {
-				if (!check[j] && field[index].isConnected(field[j])) {
-					check[j] = true;
-					queue.add(j);
-				}
-			}
+	private static void dfs(int i, int j, int g) {
+		map[i][j] = g;
+		for (int d = 0; d < 4; d++) {
+			int nr = i + dr[d];
+			int nc = j + dc[d];
+			if (!isIn(nr, nc)) continue;
+			if (map[nr][nc] != 1) continue;
+			dfs(nr, nc, g);
 		}
 	}
-}
 
-class Location {
-	int x, y;
-
-	Location(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	boolean isConnected(Location loc) {
-		return (this.x - loc.x) * (this.x - loc.x) + (this.y - loc.y) * (this.y - loc.y) == 1;
+	private static boolean isIn(int nr, int nc) {
+		return nr >= 0 && nr < n && nc >= 0 && nc < m;
 	}
 }
