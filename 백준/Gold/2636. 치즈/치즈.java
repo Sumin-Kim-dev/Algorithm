@@ -1,89 +1,88 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	
-	static int n;
-	static int m;
-	static int[][] map;
-	static int[][] before;
-	static int count;
-	
-	static int[] dr = {-1, 0, 1, 0};
-	static int[] dc = {0, 1, 0, -1};
+	static int x, y;
+	static int[][] graph;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static boolean[][] visited;
+	static List<Integer> list = new ArrayList<>();
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		map = new int[n][m];
-		before = new int[n][m];
-		count = 0;
-		for (int i = 0; i < n; i++) {
+		
+		x = Integer.parseInt(st.nextToken());
+		y = Integer.parseInt(st.nextToken());
+		
+		graph = new int[x][y];
+		
+		for (int i = 0; i < x; i++) {
 			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < m; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-				if (map[i][j] == 1) count++;
+			for (int j = 0; j < y; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		int cnt = 0;
+//		for (int i = 0; i < x; i++) {
+//			System.out.println(Arrays.toString(graph[i]));
+//		}
+		int time = 0;
+		while (true){
+			time += 1;
+			cnt = bfs(0, 0);
+			if(cnt == 0) {
+				break;
 			}
 		}
 		
-		int t = 0;
-		int answer = 0;
-		while (count > 0) {
-			t++;
-			before = new int[n][m];
-			for (int i = 0; i < n; i++) {
-				before[i] = Arrays.copyOf(map[i], m);
-			}
-			bfs();
-			answer = melt();
-			map = before;
-		}
-		System.out.println(t);
-		System.out.println(answer);
+		System.out.println(time - 1);
+		System.out.println(list.get(list.size() - 2));
+		list.clear();
+		
 	}
-
-	private static int melt() {
-		int melt = 0;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (map[i][j] == 3) {
-					before[i][j] = 0;
-					melt++;
-					count--;
-				}
-			}
-		}
-		return melt;
-	}
-
-	private static void bfs() {
-		Queue<int[]> queue = new ArrayDeque<>();
-		queue.offer(new int[] {0, 0});
-		map[0][0] = 2;
-		while (!queue.isEmpty()) {
-			int[] curr = queue.poll();
+	
+	static int bfs(int i, int j) {
+		int cnt = 0;
+		visited = new boolean[x][y];
+		Queue<int[]> que = new LinkedList<int[]>();
+		que.add(new int[] {i,j});
+		visited[i][j] = true;
+		
+		while(!que.isEmpty()) {
+			int[] now = que.poll();
+			int now_x = now[0];
+			int now_y = now[1];
 			for (int d = 0; d < 4; d++) {
-				int nr = curr[0] + dr[d];
-				int nc = curr[1] + dc[d];
-				if (!isIn(nr, nc)) continue;
-				if (map[nr][nc] == 0) {
-					queue.offer(new int[] {nr, nc});
-					map[nr][nc] = 2;
-				} else if (map[nr][nc] == 1) {
-					map[nr][nc] = 3;
+				int nx = now_x + dx[d];
+				int ny = now_y + dy[d];
+				if(0 <= nx && nx < x && 0 <= ny && ny < y && visited[nx][ny] == false) {
+					if(graph[nx][ny] == 0) {
+						que.add(new int[] {nx, ny});
+						visited[nx][ny] = true;
+					}
+					else {
+						graph[nx][ny] = 0;
+						visited[nx][ny] = true;
+						cnt += 1;
+					}
+					
 				}
 			}
 		}
+		
+		list.add(cnt);
+		return cnt;
+		
+		
 	}
 
-	private static boolean isIn(int r, int c) {
-		return r >= 0 && r < n && c >= 0 && c < m;
-	}
 }
