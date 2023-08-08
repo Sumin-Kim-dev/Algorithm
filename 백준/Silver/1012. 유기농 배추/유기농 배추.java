@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -39,20 +41,26 @@ public class Main {
 			for (int j = 0; j < m; j++) {
 				if (map[i][j] != 1) continue;
 				cnt++;
-				dfs(i, j, cnt + 1);
+				bfs(i, j, cnt + 1);
 			}
 		}
 		return cnt;
 	}
 
-	private static void dfs(int i, int j, int g) {
+	private static void bfs(int i, int j, int g) {
+		Queue<int[]> queue = new ArrayDeque<>();
 		map[i][j] = g;
-		for (int d = 0; d < 4; d++) {
-			int nr = i + dr[d];
-			int nc = j + dc[d];
-			if (!isIn(nr, nc)) continue;
-			if (map[nr][nc] != 1) continue;
-			dfs(nr, nc, g);
+		queue.offer(new int[] {i, j});
+		while (!queue.isEmpty()) {
+			int[] curr = queue.poll();
+			for (int d = 0; d < 4; d++) {
+				int nr = curr[0] + dr[d];
+				int nc = curr[1] + dc[d];
+				if (!isIn(nr, nc)) continue;
+				if (map[nr][nc] != 1) continue;
+				map[nr][nc] = g;
+				queue.offer(new int[] {nr, nc});
+			}
 		}
 	}
 
