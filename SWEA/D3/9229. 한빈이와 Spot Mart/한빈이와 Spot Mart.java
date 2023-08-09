@@ -8,6 +8,8 @@ public class Solution {
 	static int n;
 	static int m;
 	static int[] a;
+	
+	static int max;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,14 +24,21 @@ public class Solution {
 			for (int i = 0; i < n; i++) {
 				a[i] = Integer.parseInt(st.nextToken());
 			}
-			int max = -1;
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < i; j++) {
-					if (a[i] + a[j] <= m) max = Math.max(max, a[i] + a[j]);
-				}
-			}
+			max = -1;
+			combi(0, 0, 0);
 			sb.append("#" + t + " " + max + "\n");
 		}
 		System.out.println(sb);
+	}
+	
+	private static void combi(int cnt, int start, int sum) {
+		if (sum > m) return;
+		if (cnt == 2) {
+			max = Math.max(max, sum);
+			return;
+		}
+		for (int i = start; i < n; i++) {
+			combi(cnt + 1, i + 1, sum + a[i]);
+		}
 	}
 }
