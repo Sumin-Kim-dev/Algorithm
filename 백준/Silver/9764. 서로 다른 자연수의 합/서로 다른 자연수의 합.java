@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 	
-	public static final int MAX = 100999;
+	public static final int MOD = 100999;
 	
 	static int[][] dp;
 	
@@ -17,17 +17,15 @@ public class Main {
 
 	private static int solution(int n) {
 		dp = new int[n + 1][n + 1];
-		return dp(n, 0);
-	}
-
-	private static int dp(int n, int k) {
-		if (n == k) return dp[n][k] = 1;
-		if (n < 3 && k > 0 || dp[n][k] > 0) return dp[n][k];
-		if (n < 2 * k) return 0;
-		dp[n][k] = 1;
-		for (int i = k + 1; 2 * i < n - k; i++) {
-			dp[n][k] = (dp[n][k] + dp(n - k, i)) % MAX;
+		for (int j = 0; j <= n; j++) {
+			dp[0][j] = 1;
 		}
-		return dp[n][k];
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				dp[i][j] = dp[i][j - 1];
+				if (i >= j) dp[i][j] = (dp[i][j] + dp[i - j][j - 1]) % MOD;
+			}
+		}
+		return dp[n][n];
 	}
 }
