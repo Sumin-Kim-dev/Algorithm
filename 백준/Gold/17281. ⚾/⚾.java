@@ -1,73 +1,107 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	
-	static int n;
-	static int[][] results;
-	static int[] order;
-	static int max;
-	static boolean[] visited;
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		n = Integer.parseInt(br.readLine());
-		results = new int[n][9];
-		for (int i = 0; i < n; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < 9; j++) {
-				results[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
-		order = new int[9];
-		visited = new boolean[9];
-		order[3] = 1;
-		visited[0] = true;
-		max = 0;
-		perm(0);
-		System.out.println(max);
-	}
-	
-	private static void perm(int cnt) {
-		if (cnt == 9) {
-			max = Math.max(max, score());
-			return;
-		}
-		for (int i = 2; i <= 9; i++) {
-			if (visited[i - 1]) continue;
-			visited[i - 1] = true;
-			order[cnt] = i;
-			if (cnt == 2) perm(4);
-			else perm(cnt + 1);
-			visited[i - 1] = false;
-		}
-	}
-	
-	private static int score() {
-		int curr = 0;
-		int score = 0;
-		for (int inning = 0; inning < n; inning++) {
-			int currScore = 0;
-			int out = 0;
-			int base = 0;
-			while (out < 3) {
-				int result = results[inning][order[curr] - 1];
-				curr = (curr + 1) % 9;
-				base = base | 1;
-				base = base << result;
-				if (result == 0) out++;
-				for (int i = 4; i < 8; i++) {
-					if ((base & (1 << i)) != 0) {
-						score++;
-					}
-				}
-				base = base % (1 << 4);
-			}
-			score += currScore;
-		}
-		return score;
-	}
-	
+
+    static int N, points[][], tmp, ans;
+    static boolean[] visit;
+
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        N = Integer.parseInt(br.readLine());
+        points = new int[N][9];
+        for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < 9; j++) {
+                points[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        
+        //풀이 시작
+        visit = new boolean[9];
+        baseball(0, new int[9]);
+        
+        bw.write(ans+"\n");
+        bw.close();
+    }
+
+    static void baseball(int n, int[] seq) {
+        if (n == 3) {    // 4번째 차례에 1번타자를 배치하기 위함
+            baseball(n + 1, seq);
+            return;
+        }
+
+        if (n == 9) {    // 주자 순서 정하는 8! 배열 완성
+            //N이닝마다 game객체 생성 -> base, score, out 초기화 / 주자번호와 점수합계는 유지
+            tmp = 0;    
+            int runner = 0;
+            for (int i = 0; i < N; i++) {
+                Game game = new Game();
+                while (!game.isEnd()) {
+                    game.hit(points[i][seq[runner++%9]]);
+                }
+                tmp += game.score;
+            }
+            // 8!의 배열중 최대값 저장
+            ans = Math.max(ans, tmp);
+            return;
+        }
+        
+        // 순열
+        for (int i = 1; i < 9; i++) {
+            if (visit[i])
+                continue;
+            visit[i] = true;
+            seq[n] = i;
+            baseball(n + 1, seq);
+            visit[i] = false;
+        }
+    }
+}
+
+class Game {
+    int score;
+    int out;
+    boolean[] base = new boolean[3];    //1,2,3루에 주자가 있으면 true
+
+    boolean isEnd() {    // 아웃카운트 확인
+        if (out < 3) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    void hit(int n) {
+        if (n==0) {        // 아웃
+            out++;
+            return;
+        }else if(n==4) {    //홈런
+            score++;
+            for (int i = 0; i <= 2; i++) {
+                if (base[i]) {
+                    base[i] = false;
+                    score++;
+                }
+            }
+            return;
+        }
+        for (int i = 2; i > 2-n; i--) {        // 득점 베이스에 있는 주자 득점
+            if (base[i]) {
+                score++;
+                base[i] = false;
+            }
+        }
+        for (int i = 2-n; i >= 0; i--) {    // 미득점 진루
+            if (base[i]) {
+                base[i] = false;
+                base[i+n] = true;
+            }
+        }
+        base[n-1] = true;        // 타자 진루
+    }
+    
 }
