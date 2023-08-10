@@ -1,101 +1,89 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int n, m;
-	static int[][] graph;
-	static boolean[][] visited;
-	static int[][] cnt;
-	static int[] dx = {-1, 1, 0, 0};
-	static int[] dy = {0, 0, -1, 1};
-	static int answer;
-	static boolean check;
+	
+	static int n;
+	static int m;
+	static int[][] map;
+	static int ices;
+	
+	static int[] dr = {-1, 0, 1, 0};
+	static int[] dc = {0, 1, 0, -1};
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
-		
-		graph = new int[n][m];
-		
+		map = new int[n][m];
+		ices = 0;
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < m; j++) {
-				graph[i][j] = Integer.parseInt(st.nextToken());
+				map[i][j] = Integer.parseInt(st.nextToken());
+				if (map[i][j] > 0) ices++;
 			}
 		}
-		
-		answer = 0;
-		
-		while(true) {
-			visited = new boolean[n][m];
-			cnt = new int[n][m];
-			List<Integer> list = new LinkedList<>();
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < m; j++) {
-					if(graph[i][j] != 0 && visited[i][j] == false) {
-						list.add(bfs(i, j));
-					}
-				}
-			}
-			
-			// melt
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < m; j++) {
-					if(graph[i][j] > 0) {
-						graph[i][j] -= cnt[i][j];
-						graph[i][j] = Math.max(0, graph[i][j]);
-					}
-				}
-			}
-			
-			if (list.size() == 0) {
-				check = true;
-				break;
-			}
-			if(list.size() >= 2) {
-				break;
-			}
-			
-			answer += 1;
+		int t = 0;
+		while (melt()) {
+			t++;
 		}
-		if(check == true) {
-			System.out.println(0);
-		}else {
-			System.out.println(answer);
-		}
-		
-		
+		System.out.println(ices > 0 ? t : 0);
 	}
 
-	static int bfs(int i, int j) {
-		Queue<int[]> queue = new LinkedList<int[]>();
-		queue.add(new int[] {i, j});
-		visited[i][j] = true;
-		while(!queue.isEmpty()) {
-			int[] now = queue.poll();
-			int x = now[0];
-			int y = now[1];
-			
-			for (int d = 0; d < 4; d++) {
-				int nx = x + dx[d];
-				int ny = y + dy[d];
-				if(0 <= nx && nx < n && 0 <= ny && ny < m) {
-					if(visited[nx][ny] == false && graph[nx][ny] != 0) {
-						visited[nx][ny] = true;
-						queue.add(new int[] {nx, ny});
-					}else if(graph[nx][ny] == 0) {
-						cnt[x][y] += 1;
+	private static boolean melt() {
+		if (ices == 0) return false;
+		int[][] after = new int[n][m];
+		for (int i = 0; i < n; i++) {
+			after[i] = Arrays.copyOf(map[i], m);
+		}
+		if (count() > 1) return false;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (map[i][j] != 0) continue;
+				for (int d = 0; d < 4; d++) {
+					int nr = i + dr[d];
+					int nc = j + dc[d];
+					if (!isIn(nr, nc)) continue;
+					if (after[nr][nc] > 0) {
+						after[nr][nc]--;
+						if (after[nr][nc] == 0) ices--;
 					}
 				}
 			}
 		}
-		return 1;
+		map = after;
+		return true;
 	}
 
+	private static int count() {
+		int count = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (map[i][j] <= 0) continue;
+				count++;
+				dfs(i, j);
+			}
+		}
+		return count;
+	}
+
+	private static void dfs(int i, int j) {
+		map[i][j] = -1;
+		for (int d = 0; d < 4; d++) {
+			int nr = i + dr[d];
+			int nc = j + dc[d];
+			if (!isIn(nr, nc)) continue;
+			if (map[nr][nc] <= 0) continue;
+			dfs(nr, nc);
+		}
+	}
+
+	private static boolean isIn(int r, int c) {
+		return r >= 0 && r < n && c >= 0 && c < m;
+	}
 }
