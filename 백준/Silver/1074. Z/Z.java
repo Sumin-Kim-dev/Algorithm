@@ -1,25 +1,40 @@
-import java.io.*;
-import java.util.*;
+import java.util.Scanner;
 
 public class Main {
+	static int n, r, c;
+	static int answer = 0;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		r = sc.nextInt();
+		c = sc.nextInt();
+		
+		recur(0, 0, (int)Math.pow(2, n));
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-
-		int N = Integer.parseInt(st.nextToken());
-		int r = Integer.parseInt(st.nextToken());
-		int c = Integer.parseInt(st.nextToken());
-
-		bw.write(z(N, r, c) + "");
-		bw.close();
+	}
+	static void recur(int x, int y, int n) {
+		if (x == r && y == c) {
+			System.out.println(answer);
+			System.exit(0);
+		}
+		
+		if (n == 1) {
+			answer += 1;
+			return;
+		}
+	    
+		if(!(x <= r && r < x + n && y <= c && c < y + n)) {
+			answer += n * n;
+			return;
+		}
+		
+		int length = n / 2;
+		
+		recur(x, y, length);
+		recur(x, y + length, length);
+		recur(x + length, y, length);
+		recur(x + length, y + length, length);
 	}
 
-	static int z(int N, int r, int c) {
-		if (N == 1)
-			return r * 2 + c;
-		int length = 1 << (N - 1);
-		return z(N - 1, r % length, c % length) + length * length * ((r / length) * 2 + (c / length));
-	}
 }
