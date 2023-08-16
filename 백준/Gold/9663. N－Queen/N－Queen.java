@@ -2,26 +2,27 @@ import java.util.Scanner;
 
 public class Main {
 	
-	static int n;
+	static int max;
 	static int count;
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		n = sc.nextInt();
-		backtracking(0, 0, 0, 0);
+		int n = sc.nextInt();
+		max = (1 << n) - 1;
+		backtracking(0, 0, 0);
 		System.out.println(count);
 	}
 
-	private static void backtracking(int r, int col, int dia, int adia) {
-		if (r == n) {
+	private static void backtracking(int col, int dia, int adia) {
+		if (col == max) {
 			count++;
 			return;
 		}
-		for (int c = 0; c < n; c++) {
-			if ((col & 1 << c) != 0) continue;
-			if ((dia & 1 << (r + c)) != 0) continue;
-			if ((adia & 1 << (r - c + n)) != 0) continue;
-			backtracking(r + 1, col | 1 << c, dia | 1 << (r + c), adia | 1 << (r - c + n));
+		int flag = max & ~(col | dia | adia);
+		while (flag > 0) {
+			int curr = flag & (-flag);
+			flag -= curr;
+			backtracking(col | curr, (dia | curr) >> 1, (adia | curr) << 1);
 		}
 	}
 
