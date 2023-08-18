@@ -1,23 +1,27 @@
-import java.io.*;
+import java.util.Scanner;
 
 public class Main {
-
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-		int N = Integer.parseInt(br.readLine());
-		int min[] = new int[N]; // 0으로 초기화 됨
-		for (int i = 1; i <= N; i++) {
-			if (i % 3 == 0)
-				min[i - 1] = min[i / 3 - 1] + 1;
-			if (i % 2 == 0 && (min[i - 1] == 0 || min[i - 1] > min[i / 2 - 1]))
-				min[i - 1] = min[i / 2 - 1] + 1;
-			if (i > 1 && (min[i - 1] == 0 || min[i - 1] > min[i - 2]))
-				min[i - 1] = min[i - 2] + 1;
+	static int n;
+	static int[] dp;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		n = sc.nextInt();
+		dp = new int[n + 1];
+		
+		for (int i = 2; i < n + 1; i++) {
+			dp[i] = dp[i - 1] + 1;
+			
+			if(i % 3 == 0) {
+				dp[i] = Math.min(dp[i], dp[i / 3] + 1 );
+			}
+			
+			if (i % 2 == 0) {
+				dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+			}
 		}
-		bw.write(min[N - 1] + "");
-		bw.close();
+		
+		System.out.println(dp[n]);
 	}
 
 }
