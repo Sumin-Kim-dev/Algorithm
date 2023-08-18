@@ -1,27 +1,45 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-	static int n;
-	static int[] dp;
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		
-		n = sc.nextInt();
-		dp = new int[n + 1];
-		
-		for (int i = 2; i < n + 1; i++) {
-			dp[i] = dp[i - 1] + 1;
-			
-			if(i % 3 == 0) {
-				dp[i] = Math.min(dp[i], dp[i / 3] + 1 );
+		int n = sc.nextInt();
+		if (n == 1) {
+			System.out.println(0);
+			return;
+		}
+		int[] visited = new int[n + 1];
+		Queue<Integer> queue = new LinkedList<>();
+		visited[n] = 1;
+		queue.offer(n);
+		int answer = 0;
+		while (!queue.isEmpty()) {
+			int curr = queue.poll();
+			if (curr % 3 == 0 && visited[curr / 3] == 0) {
+				if (curr == 3) {
+					answer = visited[curr];
+					break;
+				}
+				visited[curr / 3] = visited[curr] + 1;
+				queue.offer(curr / 3);
 			}
-			
-			if (i % 2 == 0) {
-				dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+			if (curr % 2 == 0 && visited[curr / 2] == 0) {
+				if (curr == 2) {
+					answer = visited[curr];
+					break;
+				}
+				visited[curr / 2] = visited[curr] + 1;
+				queue.offer(curr / 2);
+			}
+			if (curr > 1 && visited[curr - 1] == 0) {
+				visited[curr - 1] = visited[curr] + 1;
+				queue.offer(curr - 1);
 			}
 		}
-		
-		System.out.println(dp[n]);
+		System.out.println(answer);
 	}
 
 }
