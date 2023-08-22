@@ -23,16 +23,16 @@ public class Solution {
 			n = Integer.parseInt(st.nextToken());
 			m = Integer.parseInt(st.nextToken());
 			int k = Integer.parseInt(st.nextToken());
-			map = new int[n + 2 * k][m + 2 * k];
+			map = new int[n + k][m + k];
 			cells = new Node[11];
 			count = 0;
 			for (int i = 0; i < n; i++) {
 				st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < m; j++) {
 					int x = Integer.parseInt(st.nextToken());
-					map[i + k][j + k] = x;
+					map[i + k / 2][j + k / 2] = x;
 					if (x > 0) {
-						cells[x] = new Node(i + k, j + k, 2 * x, cells[x]);
+						cells[x] = new Node(i + k / 2, j + k / 2, 2 * x, cells[x]);
 						count++;
 					}
 				}
@@ -47,7 +47,10 @@ public class Solution {
 		for (int t = 0; t < k; t++) {
 			for (int x = 10; x > 0; x--) {
 				for (Node temp = cells[x]; temp != null; temp = temp.next) {
-					if (temp.state == 0) break; // 죽은 상태
+					if (temp.state == 0) {
+						temp = null;
+						break; // 죽은 상태
+					}
 					temp.state--;
 					if (temp.state >= x) { // 비활성 상태
 						continue;
