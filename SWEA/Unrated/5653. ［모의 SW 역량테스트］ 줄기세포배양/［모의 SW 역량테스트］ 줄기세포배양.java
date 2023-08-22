@@ -47,16 +47,15 @@ public class Solution {
 		for (int t = 0; t < k; t++) {
 			for (int x = 10; x > 0; x--) {
 				for (Node temp = cells[x]; temp != null; temp = temp.next) {
-					if (temp.state == 0) {
-						temp = null;
-						break; // 죽은 상태
-					}
+					if (temp.state == 0) break; // 죽은 상태
 					temp.state--;
 					if (temp.state >= x) { // 비활성 상태
 						continue;
 					}
 					// 활성 상태
 					if (temp.state == 0) count--; // 끝나고 죽으면 count 감소
+					if (temp.state < x - 1) continue; // 활성화 직후가 아니면 번식이 불가능하다(번식할 자리에 이미 세포들이 있기 때문)
+					// 번식 과정
 					for (int d = 0; d < 4; d++) {
 						int nr = temp.r + dr[d];
 						int nc = temp.c + dc[d];
