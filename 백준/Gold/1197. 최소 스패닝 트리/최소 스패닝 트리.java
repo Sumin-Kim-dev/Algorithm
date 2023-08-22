@@ -1,74 +1,87 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-    int v;
-    ArrayList<Edge>[] adj;
+	
+	static class Edge implements Comparable<Edge>{
+		int s;
+		int t;
+		int w;
+		
+		public Edge(int s, int t, int w) {
+			this.s = s;
+			this.t = t;
+			this.w = w;
+		}
 
-    class Edge implements Comparable<Edge> {
-        int end, weight;
+		@Override
+		public int compareTo(Edge o) {
+			return Integer.compare(this.w, o.w);
+		}
+	}
+	
+	static PriorityQueue<Edge> edges = new PriorityQueue<>();
+	static int v;
+	static int[] p;
+	static int[] r;
 
-        Edge(int end, int weight) {
-            this.end = end;
-            this.weight = weight;
-        }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		v = Integer.parseInt(st.nextToken());
+		int e = Integer.parseInt(st.nextToken());
+		
+		while (e-- > 0) {
+			st = new StringTokenizer(br.readLine());
+			int s = Integer.parseInt(st.nextToken()) - 1;
+			int t = Integer.parseInt(st.nextToken()) - 1;
+			int w = Integer.parseInt(st.nextToken());
+			edges.offer(new Edge(s, t, w));
+		}
+		
+		makeSet();
+		
+		int cnt = 0;
+		int min = 0;
+		while (!edges.isEmpty() && cnt < v - 1) {
+			Edge edge = edges.poll();
+			if (union(edge.s, edge.t)) {
+				min += edge.w;
+				cnt++;
+			}
+		}
+		System.out.println(min);
+	}
 
-        @Override
-        public int compareTo(Edge o) {
-            if (this.weight > o.weight) return 1;
-            if (this.weight < o.weight) return -1;
-            return this.end - o.end;
-        }
-    }
+	private static void makeSet() {
+		p = new int[v];
+		r = new int[v];
+		for (int i = 0; i < v; i++) {
+			p[i] = i;
+			r[i] = 1;
+		}
+	}
 
-    void input() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        v = Integer.parseInt(st.nextToken());
-        int e = Integer.parseInt(st.nextToken());
-        adj = new ArrayList[v];
-        for (int i = 0; i < v; i++) {
-            adj[i] = new ArrayList<>();
-        }
-        while (e-- > 0) {
-            st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken()) - 1;
-            int end = Integer.parseInt(st.nextToken()) - 1;
-            int weight = Integer.parseInt(st.nextToken());
-            adj[start].add(new Edge(end, weight));
-            adj[end].add(new Edge(start, weight));
-        }
-    }
+	private static boolean union(int x, int y) {
+		x = find(x);
+		y = find(y);
+		if (x == y) return false;
+		if (r[x] < r[y]) {
+			r[y] += r[x];
+			p[x] = y;
+		} else {
+			r[x] += r[y];
+			p[y] = x;
+		}
+		return true;
+	}
 
-    int Prim() {
-        int totalWeight = 0;
-        boolean[] isSelected = new boolean[v];
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-        pq.add(new Edge(0, 0));
-        while (!pq.isEmpty()) {
-            Edge currEdge = pq.poll();
-            int curr = currEdge.end;
-            if (isSelected[curr]) continue;
-            isSelected[curr] = true;
-            totalWeight += currEdge.weight;
-            for (Edge e : adj[curr]) {
-                if (isSelected[e.end]) continue;
-                pq.add(e);
-            }
-        }
-        return totalWeight;
-    }
+	private static int find(int x) {
+		if (x == p[x]) return p[x];
+		return p[x] = find(p[x]);
+	}
 
-    void solution() throws IOException {
-        input();
-        System.out.println(Prim());
-    }
-
-    public static void main(String[] args) throws IOException {
-        new Main().solution();
-    }
 }
