@@ -1,64 +1,69 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
-class Main {
-    static int[] parent;
+public class Main {
+	
+	static class Point implements Comparable<Point> {
+		int i;
+		double dist;
+		
+		public Point(int i, double dist) {
+			this.i = i;
+			this.dist = dist;
+		}
 
-    public static int findParent(int x) {
-        if (parent[x] != x) {
-            parent[x] = findParent(parent[x]);
-        }
-        return parent[x];
-    }
+		@Override
+		public int compareTo(Point o) {
+			return Double.compare(this.dist, o.dist);
+		}
+	}
 
-    public static void unionParent(int a, int b) {
-        a = findParent(a);
-        b = findParent(b);
-        if (a < b) {
-            parent[b] = a;
-        } else {
-            parent[a] = b;
-        }
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		double[][] points = new double[n][2];
+		for (int i = 0; i < n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			points[i][0] = Double.parseDouble(st.nextToken());
+			points[i][1] = Double.parseDouble(st.nextToken());
+		}
+		
+		double[][] dist = new double[n][n];
+		for (int i = 0; i < n; i++) {
+			dist[i][i] = 10000;
+			for (int j = 0; j < i; j++) {
+				dist[i][j] = dist[j][i] = d(points[i], points[j]);
+			}
+		}
+		
+		double cost = 0;
+		PriorityQueue<Point> pq = new PriorityQueue<>();
+		double[] minDist = new double[n];
+		boolean[] visited = new boolean[n];
+		Arrays.fill(minDist, 10000);
+		pq.offer(new Point(0, 0));
+		while (!pq.isEmpty()) {
+			Point p = pq.poll();
+			if (visited[p.i]) continue;
+			minDist[p.i] = p.dist;
+			visited[p.i] = true;
+			cost += p.dist;
+			for (int i = 0; i < n; i++) {
+				if (dist[p.i][i] < minDist[i]) {
+					minDist[i] = dist[p.i][i];
+					pq.offer(new Point(i, minDist[i]));
+				}
+			}
+		}
+		System.out.println(cost);
+	}
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        parent = new int[n + 1];
-        List<double[]> stars = new ArrayList<>();
-        List<double[]> edges = new ArrayList<>();
-        double result = 0;
+	private static double d(double[] p1, double[] p2) {
+		return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
+	}
 
-        for (int i = 0; i <= n; i++) {
-            parent[i] = i;
-        }
-
-        for (int i = 0; i < n; i++) {
-            double x = sc.nextDouble();
-            double y = sc.nextDouble();
-            stars.add(new double[]{x, y});
-        }
-
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-                double dx = stars.get(i)[0] - stars.get(j)[0];
-                double dy = stars.get(i)[1] - stars.get(j)[1];
-                double distance = Math.sqrt(dx * dx + dy * dy);
-                edges.add(new double[]{distance, (double) i, (double) j});
-            }
-        }
-
-        edges.sort(Comparator.comparingDouble(a -> a[0]));
-
-        for (double[] edge : edges) {
-            double cost = edge[0];
-            int a = (int) edge[1];
-            int b = (int) edge[2];
-            if (findParent(a) != findParent(b)) {
-                unionParent(a, b);
-                result += cost;
-            }
-        }
-
-        System.out.printf("%.2f\n", result);
-    }
 }
