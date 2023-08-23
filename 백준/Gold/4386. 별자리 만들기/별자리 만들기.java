@@ -1,84 +1,64 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class Main {
-	
-	static class Edge implements Comparable<Edge> {
-		int f;
-		int t;
-		double w;
-		
-		public Edge(int f, int t, double w) {
-			this.f = f;
-			this.t = t;
-			this.w = w;
-		}
+class Main {
+    static int[] parent;
 
-		@Override
-		public int compareTo(Edge o) {
-			return Double.compare(this.w, o.w);
-		}
-	}
-	
-	static Edge[] edges;
-	static int[] set;
+    public static int findParent(int x) {
+        if (parent[x] != x) {
+            parent[x] = findParent(parent[x]);
+        }
+        return parent[x];
+    }
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		double[][] points = new double[n][2];
-		for (int i = 0; i < n; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			points[i][0] = Double.parseDouble(st.nextToken());
-			points[i][1] = Double.parseDouble(st.nextToken());
-		}
-		
-		edges = new Edge[n * (n - 1) / 2];
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < i; j++) {
-				edges[i * (i - 1) / 2 + j] = new Edge(i, j, d(points[i], points[j]));
-			}
-		}
-		Arrays.sort(edges);
-		
-		set = new int[n];
-		Arrays.fill(set, -1);
-		double cost = 0;
-		int cnt = 0;
-		for (Edge edge : edges) {
-			if (union(edge.f, edge.t)) {
-				cost += edge.w;
-				cnt++;
-			}
-			if (cnt == n - 1) break;
-		}
-		System.out.println(cost);
-	}
+    public static void unionParent(int a, int b) {
+        a = findParent(a);
+        b = findParent(b);
+        if (a < b) {
+            parent[b] = a;
+        } else {
+            parent[a] = b;
+        }
+    }
 
-	private static boolean union(int f, int t) {
-		f = find(f);
-		t = find(t);
-		if (f == t) return false;
-		if (-set[f] > -set[t]) {
-			set[f] += set[t];
-			set[t] = f;
-		} else {
-			set[t] += set[f];
-			set[f] = t;
-		}
-		return true;
-	}
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        parent = new int[n + 1];
+        List<double[]> stars = new ArrayList<>();
+        List<double[]> edges = new ArrayList<>();
+        double result = 0;
 
-	private static int find(int x) {
-		if (set[x] < 0) return x;
-		return set[x] = find(set[x]);
-	}
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
 
-	private static double d(double[] p1, double[] p2) {
-		return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
-	}
+        for (int i = 0; i < n; i++) {
+            double x = sc.nextDouble();
+            double y = sc.nextDouble();
+            stars.add(new double[]{x, y});
+        }
 
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                double dx = stars.get(i)[0] - stars.get(j)[0];
+                double dy = stars.get(i)[1] - stars.get(j)[1];
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                edges.add(new double[]{distance, (double) i, (double) j});
+            }
+        }
+
+        edges.sort(Comparator.comparingDouble(a -> a[0]));
+
+        for (double[] edge : edges) {
+            double cost = edge[0];
+            int a = (int) edge[1];
+            int b = (int) edge[2];
+            if (findParent(a) != findParent(b)) {
+                unionParent(a, b);
+                result += cost;
+            }
+        }
+
+        System.out.printf("%.2f\n", result);
+    }
 }
