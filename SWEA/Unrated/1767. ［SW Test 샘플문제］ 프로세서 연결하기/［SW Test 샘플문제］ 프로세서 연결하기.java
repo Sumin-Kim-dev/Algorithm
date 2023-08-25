@@ -58,16 +58,15 @@ public class Solution {
 		backtracking(cnt + 1, connected, length);
 		// 연결
 		for (int d = 0; d < 4; d++) {
-			if (canConnect(cnt, d)) {
-				connect(cnt, d);
-				backtracking(cnt + 1, connected + 1, length + dist(cnt, d));
-				disconnect(cnt, d);
+			if (canConnect(core, d)) {
+				connect(core, cnt, d);
+				backtracking(cnt + 1, connected + 1, length + dist(core, d));
+				disconnect(core, cnt, d);
 			}
 		}
 	}
 
-	private static int dist(int cnt, int d) {
-		int[] core = cores.get(cnt);
+	private static int dist(int[] core, int d) {
 		int r = core[0];
 		int c = core[1];
 		if (d == 0) return r;
@@ -81,8 +80,7 @@ public class Solution {
 		return r >= 0 && r < n && c >= 0 && c < n;
 	}
 
-	private static boolean canConnect(int cnt, int d) {
-		int[] core = cores.get(cnt);
+	private static boolean canConnect(int[] core, int d) {
 		int r = core[0] + dr[d];
 		int c = core[1] + dc[d];
 		while (isIn(r, c)) {
@@ -93,8 +91,7 @@ public class Solution {
 		return true;
 	}
 	
-	private static void connect(int cnt, int d) {
-		int[] core = cores.get(cnt);
+	private static void connect(int[] core, int cnt, int d) {
 		int r = core[0] + dr[d];
 		int c = core[1] + dc[d];
 		while (isIn(r, c)) {
@@ -104,8 +101,7 @@ public class Solution {
 		}
 	}
 	
-	private static void disconnect(int cnt, int d) {
-		int[] core = cores.get(cnt);
+	private static void disconnect(int[] core, int cnt, int d) {
 		int r = core[0] + dr[d];
 		int c = core[1] + dc[d];
 		while (isIn(r, c)) {
