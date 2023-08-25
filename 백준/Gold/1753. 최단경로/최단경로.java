@@ -1,89 +1,83 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
+	
+	public static final int INF = Integer.MAX_VALUE;
+	
+	static class Edge implements Comparable<Edge> {
+		int t;
+		int w;
+		
+		public Edge(int t, int w) {
+			this.t = t;
+			this.w = w;
+		}
 
-	final static int INF = 200001;
-
+		@Override
+		public int compareTo(Edge o) {
+			return Integer.compare(this.w, o.w);
+		}
+	}
+	
+	static int v;
+	static List<Edge>[] adj;
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		StringBuilder sb = new StringBuilder();
-
-		int v = Integer.parseInt(st.nextToken());
+		v = Integer.parseInt(st.nextToken());
 		int e = Integer.parseInt(st.nextToken());
-		int k = Integer.parseInt(br.readLine());
-		LinkedList<Edge>[] edge = new LinkedList[v];
+		int k = Integer.parseInt(br.readLine()) - 1;
+		adj = new ArrayList[v];
 		for (int i = 0; i < v; i++) {
-			edge[i] = new LinkedList<>();
+			adj[i] = new ArrayList<>();
 		}
-		for (int i = 0; i < e; i++) {
+		while (e-- > 0) {
 			st = new StringTokenizer(br.readLine());
-			int start = Integer.parseInt(st.nextToken()) - 1;
-			int end = Integer.parseInt(st.nextToken()) - 1;
-			edge[start].add(new Edge(end, Integer.parseInt(st.nextToken())));
+			int a = Integer.parseInt(st.nextToken()) - 1;
+			int b = Integer.parseInt(st.nextToken()) - 1;
+			int w = Integer.parseInt(st.nextToken());
+			adj[a].add(new Edge(b, w));
 		}
-		int[] ans = dijkstra(edge, k - 1);
+		int[] answer = dijkstra(k);
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < v; i++) {
-			if (ans[i] != INF)
-				sb.append(ans[i]);
-			if (ans[i] == INF)
-				sb.append("INF");
+			if (answer[i] == INF) sb.append("INF");
+			else sb.append(answer[i]);
 			sb.append('\n');
 		}
-		bw.write(sb.toString());
-		bw.close();
+		System.out.println(sb);
 	}
 
-	static int[] dijkstra(LinkedList<Edge>[] edge, int k) {
-		int[] dist = new int[edge.length];
-		boolean[] visited = new boolean[edge.length];
-		PriorityQueue<Vertex> pq = new PriorityQueue<>();
-		Arrays.fill(dist, INF);
-		pq.offer(new Vertex(k, 0));
-		dist[k] = 0;
-		while (!pq.isEmpty()) {
-			Vertex curr = pq.poll();
-			// 이미 방문한 점은 스킵
-			if (dist[curr.node] < curr.minDist)
-				continue;
-			// 이웃한 점 확인
-			Iterator<Edge> iter = edge[curr.node].iterator();
-			while (iter.hasNext()) {
-				Edge e = iter.next();
-				// 새 경로가 더 가깝다면 갱신
-				if (dist[curr.node] + e.dist < dist[e.end]) {
-					dist[e.end] = dist[curr.node] + e.dist;
-					pq.offer(new Vertex(e.end, dist[e.end]));
+	private static int[] dijkstra(int k) {
+		boolean[] visited = new boolean[v];
+		int[] minDist = new int[v];
+		Arrays.fill(minDist, INF);
+		minDist[k] = 0;
+		PriorityQueue<Edge> pq = new PriorityQueue<>();
+		pq.offer(new Edge(k, minDist[k]));
+		
+		while(!pq.isEmpty()) {
+			Edge curr = pq.poll();
+			if (visited[curr.t]) continue;
+			visited[curr.t] = true;
+			for (Edge next : adj[curr.t]) {
+				if (visited[next.t]) continue;
+				if (minDist[next.t] > minDist[curr.t] + next.w) {
+					minDist[next.t] = minDist[curr.t] + next.w;
+					pq.offer(new Edge(next.t, minDist[next.t]));
 				}
 			}
 		}
-		return dist;
-	}
-}
-
-class Vertex implements Comparable<Vertex> {
-
-	final static int INF = 200001;
-
-	int node, minDist;
-
-	Vertex(int node, int minDist) {
-		this.node = node;
-		this.minDist = minDist;
+		
+		return minDist;
 	}
 
-	public int compareTo(Vertex v) {
-		return this.minDist - v.minDist;
-	}
-}
-
-class Edge {
-	int end, dist;
-
-	Edge(int end, int dist) {
-		this.end = end;
-		this.dist = dist;
-	}
 }
