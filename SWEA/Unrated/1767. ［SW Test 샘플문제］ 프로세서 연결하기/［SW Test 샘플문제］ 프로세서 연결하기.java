@@ -33,12 +33,13 @@ public class Solution {
 				for (int j = 0; j < n; j++) {
 					map[i][j] = Integer.parseInt(st.nextToken());
 					if(map[i][j] == 1) {
-						cores.add(new int[] {i, j});
+						if (i == 0 || i == n - 1 || j == 0 || j == n - 1) maxConnected++;
+						else cores.add(new int[] {i, j});
 					}
 				}
 			}
 			nCore = cores.size();
-			backtracking(0, 0, 0);
+			backtracking(0, maxConnected, 0);
 			sb.append('#').append(t).append(' ').append(minLength).append('\n');
 		}
 		System.out.println(sb);
