@@ -1,38 +1,37 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st;
-
 		int n = Integer.parseInt(br.readLine());
-		int cost[][] = new int[n][3];
+		int[][] map = new int[n][3];
 		for (int i = 0; i < n; i++) {
-			st = new StringTokenizer(br.readLine());
+			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < 3; j++) {
-				cost[i][j] = Integer.parseInt(st.nextToken());
+				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		int total_cost[] = new int[3], temp[];
-		int cost1, cost2;
+		
+		int[][] dp = new int[n + 1][3];
 		for (int i = 1; i <= n; i++) {
-			temp = total_cost.clone();
 			for (int j = 0; j < 3; j++) {
-				cost1 = temp[(j + 1) % 3] + cost[i - 1][j];
-				cost2 = temp[(j + 2) % 3] + cost[i - 1][j];
-				total_cost[j] = cost1 > cost2 ? cost2 : cost1;
+				dp[i][j] = Integer.MAX_VALUE;
+				for (int k = 0; k < 3; k++) {
+					if (j == k) continue;
+					if (dp[i][j] > dp[i - 1][k]) dp[i][j] = dp[i - 1][k];
+				}
+				dp[i][j] += map[i - 1][j];
 			}
 		}
-		int min = total_cost[0];
-		for (int i = 1; i < 3; i++) {
-			if (total_cost[i] < min)
-				min = total_cost[i];
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < 3; i++) {
+			if (min > dp[n][i]) min = dp[n][i];
 		}
-		bw.write(min + "");
-		bw.close();
+		System.out.println(min);
 	}
 
 }
