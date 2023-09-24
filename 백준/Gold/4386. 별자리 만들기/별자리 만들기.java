@@ -2,25 +2,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
 	
-	static class Point implements Comparable<Point> {
-		int i;
-		double dist;
+	static class Edge implements Comparable<Edge> {
+		int f;
+		int t;
+		double w;
 		
-		public Point(int i, double dist) {
-			this.i = i;
-			this.dist = dist;
+		public Edge(int f, int t, double w) {
+			this.f = f;
+			this.t = t;
+			this.w = w;
 		}
 
 		@Override
-		public int compareTo(Point o) {
-			return Double.compare(this.dist, o.dist);
+		public int compareTo(Edge o) {
+			return Double.compare(this.w, o.w);
 		}
 	}
+	
+	static Edge[] edges;
+	static int[] set;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,34 +36,45 @@ public class Main {
 			points[i][1] = Double.parseDouble(st.nextToken());
 		}
 		
-		double[][] dist = new double[n][n];
+		edges = new Edge[n * (n - 1) / 2];
 		for (int i = 0; i < n; i++) {
-			dist[i][i] = 10000;
 			for (int j = 0; j < i; j++) {
-				dist[i][j] = dist[j][i] = d(points[i], points[j]);
+				edges[i * (i - 1) / 2 + j] = new Edge(i, j, d(points[i], points[j]));
 			}
 		}
+		Arrays.sort(edges);
 		
+		set = new int[n];
+		Arrays.fill(set, -1);
 		double cost = 0;
-		PriorityQueue<Point> pq = new PriorityQueue<>();
-		double[] minDist = new double[n];
-		boolean[] visited = new boolean[n];
-		Arrays.fill(minDist, 10000);
-		pq.offer(new Point(0, 0));
-		while (!pq.isEmpty()) {
-			Point p = pq.poll();
-			if (visited[p.i]) continue;
-			minDist[p.i] = p.dist;
-			visited[p.i] = true;
-			cost += p.dist;
-			for (int i = 0; i < n; i++) {
-				if (dist[p.i][i] < minDist[i]) {
-					minDist[i] = dist[p.i][i];
-					pq.offer(new Point(i, minDist[i]));
-				}
+		int cnt = 0;
+		for (Edge edge : edges) {
+			if (union(edge.f, edge.t)) {
+				cost += edge.w;
+				cnt++;
 			}
+			if (cnt == n - 1) break;
 		}
 		System.out.println(cost);
+	}
+
+	private static boolean union(int f, int t) {
+		f = find(f);
+		t = find(t);
+		if (f == t) return false;
+		if (-set[f] > -set[t]) {
+			set[f] += set[t];
+			set[t] = f;
+		} else {
+			set[t] += set[f];
+			set[f] = t;
+		}
+		return true;
+	}
+
+	private static int find(int x) {
+		if (set[x] < 0) return x;
+		return set[x] = find(set[x]);
 	}
 
 	private static double d(double[] p1, double[] p2) {
