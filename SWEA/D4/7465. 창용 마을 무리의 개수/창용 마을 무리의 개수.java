@@ -1,7 +1,12 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Solution {
+	
+	static int[] set;
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -13,36 +18,37 @@ public class Solution {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int n = Integer.parseInt(st.nextToken());
 			int m = Integer.parseInt(st.nextToken());
-			boolean[][] friends = new boolean[n][n];
+			set = new int[n];
+			Arrays.fill(set, -1);
+			int count = n;
 			while (m-- > 0) {
 				st = new StringTokenizer(br.readLine());
 				int i = Integer.parseInt(st.nextToken()) - 1;
 				int j = Integer.parseInt(st.nextToken()) - 1;
-				friends[i][j] = friends[j][i] = true;
+				count -= union(i, j);
 			}
-			sb.append(clusters(n, friends)).append("\n");
+			sb.append(count).append("\n");
 		}
 		System.out.println(sb);
 	}
 
-	private static int clusters(int n, boolean[][] friends) {
-		boolean[] check = new boolean[n];
-		int count = 0;
-		for (int i = 0; i < n; i++) {
-			if (check[i]) continue;
-			count++;
-			dfs(i, n, check, friends);
+	private static int union(int i, int j) {
+		i = find(i);
+		j = find(j);
+		if (i == j) return 0;
+		if (-set[i] < -set[j]) {
+			int temp = i;
+			i = j;
+			j = temp;
 		}
-		return count;
+		set[i] += set[j];
+		set[j] = i;
+		return 1;
 	}
 
-	private static void dfs(int i, int n, boolean[] check, boolean[][] friends) {
-		for (int k = 0; k < n; k++) {
-			if (!friends[i][k]) continue;
-			if (check[k]) continue;
-			check[k] = true;
-			dfs(k, n, check, friends);
-		}
+	private static int find(int i) {
+		if (set[i] < 0) return i;
+		return set[i] = find(set[i]);
 	}
 
 }
