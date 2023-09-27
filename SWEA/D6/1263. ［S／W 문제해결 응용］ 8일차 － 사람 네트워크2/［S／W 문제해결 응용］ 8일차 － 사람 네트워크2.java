@@ -29,20 +29,19 @@ public class Solution {
 				boolean[] isVisited = new boolean[n];
 				isVisited[i] = true;
 				int start = 0;
-				int size = 0;
+				int end = 0;
 				int[] queue = new int[n];
-				queue[start + size++] = i;
+				queue[end++] = i;
 				int d = 0;
-				while (size > 0) {
-					int qSize = size;
+				while (end > start) {
+					int qSize = end - start;
 					cc += d * qSize;
 					for (int j = 0; j < qSize; j++) {
 						int curr = queue[start++];
-						size--;
 						for (int next : adj[curr]) {
 							if (isVisited[next]) continue;
 							isVisited[next] = true;
-							queue[start + size++] = next;
+							queue[end++] = next;
 						}
 					}
 					d++;
