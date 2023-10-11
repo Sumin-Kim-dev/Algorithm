@@ -31,15 +31,14 @@ public class Solution {
 	}
 	
 	private static long inv(long n) {
-		return pow(n, prime - 2);
-	}
-
-	private static long pow(long n, int i) {
-		if (i == 0) return 1;
-		long half = pow(n, i / 2);
-		long part = (half * half) % prime;
-		if ((i & 1) == 0) return part;
-		return (n * part) % prime;
+		int k = prime - 2;
+		long answer = 1;
+		while (k > 0) {
+			if ((k & 1) != 0) answer = (answer * n) % prime;
+			n = (n * n) % prime;
+			k >>= 1;
+		}
+		return answer;
 	}
 
 }
